@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 40px;
+}
+.headLeft {
+    display: flex;
+    align-items: center;
+    b {
+        margin-left: 8px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+.headRight {
+    font-size: 18px;
+    line-height: 24px;
+}
+.main {
+    min-width: 1440px;
+    height: 100%;
+    padding: 0 190px;
+    overflow-y: scroll;
+    background-color: #fafafa;
+}

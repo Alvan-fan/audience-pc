@@ -1,81 +1,88 @@
-@import '/public/style/mixin.scss';
-
 .container {
-    box-sizing: border-box;
-    padding: 0.16rem 0;
-}
-.userInfo {
-    padding: 0 0.16rem;
-}
-.head {
     position: relative;
     display: flex;
-    margin-bottom: 0.16rem;
-    filter: drop-shadow(6 px 20 px 25 px rgba(119, 142, 165, 0.1));
+    margin-top: 20px;
 }
-.avatar {
-    width: 0.6rem;
-    height: 0.6rem;
+
+// 中间content
+.main {
+    width: 66%;
+    height: 1000px;
+    background-color: #fff;
 }
-.userName {
-    position: absolute;
-    top: 0.05rem;
-    left: 50%;
-    font-weight: bold;
-    font-size: 0.18rem;
-    transform: translateX(-50%);
-}
-.nickName {
-    margin-bottom: 0.08rem;
-    color: #242424;
-    font-weight: bold;
-}
-.follower {
-    margin-bottom: 0.12rem;
-    font-weight: 500;
-    font-size: 0.14rem;
-}
-.bio {
-    font-size: 0.12rem;
-    @include ellipsis-lines(3);
-}
-.lockContainer {
-    margin: 0 0.2rem;
-    border-radius: 10px;
-    box-shadow: 0px 0px 0.895833px rgba(0, 0, 0, 0.48), 0px 0px 3.58333px rgba(0, 0, 0, 0.12);
-}
-.lockContent {
+.banner {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 0;
-    background-image: url('/img/lockBackGround.png');
+    margin-bottom: 90px;
+    background-image: url('/img/homeBanner.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    .mask {
+        height: 160px;
+        background: linear-gradient(
+            4.97deg,
+            rgba(104, 104, 104, 0.8) -16.56%,
+            rgba(0, 0, 0, 0) 95.87%
+        );
+    }
+    .avatarContainer {
+        position: absolute;
+        top: 100px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 20px 0 12px;
+    }
+    .avatar {
+        width: 124px;
+        height: 124px;
+        border: 8px solid #fff;
+    }
+    .btn {
+        width: 196px;
+        height: 42px;
+        font-weight: bold;
+        font-size: 14px;
+    }
 }
-.lockHead {
-    position: absolute;
-    bottom: 0.12rem;
-    left: 0.18rem;
-    display: flex;
-    align-items: center;
-    color: #bdbdbd;
-    font-weight: 500;
-    font-size: 0.14rem;
+.userInfo {
+    padding: 0 20px;
+    .nameContainer {
+        display: flex;
+        align-items: center;
+        margin-bottom: 17px;
+    }
+    .nickName {
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 18px;
+        font-style: normal;
+        line-height: 18px;
+    }
+    .userName {
+        color: #bdbdbd;
+        font-size: 16px;
+        line-height: 14px;
+    }
+    .follower {
+        margin-bottom: 8px;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .bio {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 0;
+    }
 }
-.resourceNumber {
-    margin: 0 0.18rem 0 0.04rem;
-    color: #fff;
-}
-.lockImg {
-    text-align: center;
-}
-.lockBtn {
-    padding: 0.16rem 0;
-    color: #242424;
-    font-weight: bold;
-    font-size: 0.14rem;
-    line-height: 0.16rem;
-    text-align: center;
+
+// 右侧组件
+.sidebar {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 20px;
+    width: 34%;
+    height: 300px;
+    margin-left: 20px;
+    background-color: #fff;
 }

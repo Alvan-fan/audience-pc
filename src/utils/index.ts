@@ -9,15 +9,6 @@ dayjs.extend(calendar);
 dayjs.extend(dura);
 dayjs.extend(utc);
 
-// 全局设置rem
-export const SetRem = (win: any, doc: any) => {
-    const changeSize = () => {
-        doc.documentElement.style.fontSize = doc.documentElement.clientWidth / 3.75 + 'px';
-    };
-    changeSize();
-    win.addEventListener('resize', changeSize, false);
-};
-
 // 全局导出cookie实例
 export const cookie = new Cookie();
 

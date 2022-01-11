@@ -2,35 +2,19 @@
  * @file 作者首页
  */
 
-import React, { useCallback, useEffect } from 'react';
-import lockIcon from '/public/img/lock.svg';
-import photoIcon from '/public/img/photo.svg';
-import videoIcon from '/public/img/video.svg';
-import { giftOutline } from 'ionicons/icons';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import GuideCard from '@/components/GuideCard';
-import Gallery from '@/pages/gallery';
 import Links from '@/pages/links';
 import Permissions from '@/pages/permissions';
-import Subscribe from '@/pages/subscribe';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { getI18nLanguage } from '@/utils';
-import {
-    IonAvatar,
-    IonContent,
-    IonFab,
-    IonFabButton,
-    IonIcon,
-    IonLoading,
-    IonPage,
-} from '@ionic/react';
+import { IonAvatar, IonButton } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -47,81 +31,49 @@ const Creator: React.FC = () => {
         }
     }, [userInfo]);
 
-    const RenderLockCard = useCallback(() => {
-        if (!userInfo) {
-            return null;
-        }
-        const { post_count, username = '', homepage_locked } = userInfo;
-        const { video_post_count = 0, image_post_count = 0 } = post_count;
-        if (homepage_locked) {
-            return (
-                <div className={ss.lockContainer}>
-                    <div className={ss.lockContent}>
-                        <div className={ss.lockImg}>
-                            <Image src={lockIcon} />
-                        </div>
-                        <div className={ss.lockHead}>
-                            <Image src={photoIcon} />
-                            <span className={ss.resourceNumber}>{image_post_count}</span>
-                            <Image src={videoIcon} />
-                            <span className={ss.resourceNumber}>{video_post_count}</span>
-                        </div>
-                    </div>
-                    <div
-                        className={ss.lockBtn}
-                        onClick={() => {
-                            store.setGlobalState('subscribeVisible', true);
-                        }}
-                    >
-                        {`${t('Subscribe to unlock')} ${username} ${t('’s posts')}`}
-                    </div>
-                </div>
-            );
-        }
-        return <Gallery />;
-    }, [userInfo]);
-
     if (!userInfo) {
-        return <IonLoading isOpen={true} message={t('Please wait')} />;
+        return null;
     }
 
     const { avatar, bio, name, number_follower, username } = userInfo;
 
     return (
-        <IonPage>
-            <IonContent>
-                <div className={ss.container}>
-                    <div className={ss.userInfo}>
-                        <div className={ss.head}>
-                            <IonAvatar className={ss.avatar}>
-                                <img src={avatar} />
-                            </IonAvatar>
-                            <div className={ss.userName}>{`@${username.toLowerCase()}`}</div>
-                        </div>
-                        <div className={ss.nickName}>{name}</div>
-                        <div className={ss.follower}>
-                            {number_follower} {t('Followers')}
-                        </div>
-                        <pre className={ss.bio}>{bio}</pre>
-                        <Subscribe />
+        <div className={ss.container}>
+            <div className={ss.main}>
+                <div className={ss.banner}>
+                    <div className={ss.mask} />
+                    <div className={ss.avatarContainer}>
+                        <IonAvatar className={ss.avatar}>
+                            <img src={avatar} />
+                        </IonAvatar>
+                        <IonButton
+                            mode="ios"
+                            onClick={() => {
+                                console.log(111);
+                            }}
+                            className={ss.btn}
+                        >
+                            {t('Subscribe')}
+                        </IonButton>
                     </div>
-                    <Links />
-                    <RenderLockCard />
                 </div>
-            </IonContent>
-            <IonFab
-                vertical="bottom"
-                horizontal="end"
-                slot="fixed"
-                onClick={() => router.push(`/support/${username}`)}
-            >
-                <IonFabButton>
-                    <IonIcon icon={giftOutline} />
-                </IonFabButton>
-            </IonFab>
+                <div className={ss.userInfo}>
+                    <div className={ss.nameContainer}>
+                        <span className={ss.nickName}>{name}</span>
+                        <span className={ss.userName}>{`@${username.toLowerCase()}`}</span>
+                    </div>
+                    <div className={ss.follower}>
+                        {number_follower} {t('Followers')}
+                    </div>
+                    <pre className={ss.bio}>{bio}</pre>
+                </div>
+                <div className={ss.content}>
+                    <Links />
+                </div>
+            </div>
+            <div className={ss.sidebar}>123</div>
             <Permissions creatorName={username} />
-            <GuideCard />
-        </IonPage>
+        </div>
     );
 };
 

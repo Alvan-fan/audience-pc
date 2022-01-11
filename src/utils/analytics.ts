@@ -16,7 +16,8 @@ import Router from 'next/router';
  */
 export const initGA = (UA: string) => {
     if (UA && process.browser) {
-        ReactGA.initialize(UA, { debug: process.env.NODE_ENV === 'development' });
+        ReactGA.initialize(UA, { debug: false });
+        // ReactGA.initialize(UA, { debug: process.env.NODE_ENV === 'development' });
         logPageViews();
     }
 };

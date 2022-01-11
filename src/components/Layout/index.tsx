@@ -2,11 +2,15 @@
  * @file 全局layout
  */
 import React from 'react';
+import logo from '/public/img/logo.svg';
 import { observer } from 'mobx-react';
+import Image from 'next/image';
 
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
-import { IonApp, IonToast } from '@ionic/react';
+import { IonApp, IonHeader, IonToast } from '@ionic/react';
+
+import ss from './index.module.scss';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const store: GlobalStoreType = useStore().globalStore;
@@ -14,7 +18,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const { visible, msg, color = 'danger', duration = 2000 } = globalToast;
     return (
         <IonApp>
-            <main>{children}</main>
+            <IonHeader>
+                <div className={ss.header}>
+                    <div className={ss.headLeft}>
+                        <Image src={logo} />
+                        <b>House Studio</b>
+                    </div>
+                    <div className={ss.headRight}>Create on House Studio</div>
+                </div>
+            </IonHeader>
+            <main className={ss.main}>{children}</main>
             <IonToast
                 isOpen={visible}
                 message={msg}

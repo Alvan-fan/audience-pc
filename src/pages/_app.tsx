@@ -7,7 +7,7 @@ import { appWithTranslation } from 'next-i18next';
 import Layout from '@/components/Layout';
 import { initStore, StoreProvider } from '@/store';
 import globalStore from '@/store/globalStore';
-import { cookie, initUserState, SetRem } from '@/utils';
+import { cookie, initUserState } from '@/utils';
 import { initGA } from '@/utils/analytics';
 import { STRIPE_KEY } from '@/utils/config';
 import { GA_TRACKING_ID } from '@/utils/config';
@@ -35,9 +35,6 @@ const MyApp = (props: any) => {
     const { Component, pageProps } = props;
 
     useEffect(() => {
-        if (window) {
-            SetRem(window, document);
-        }
         initGA(GA_TRACKING_ID);
         initUserState(
             cookie.get('ACCESS_TOKEN'),

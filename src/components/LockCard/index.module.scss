@@ -1,0 +1,40 @@
+.lockContainer {
+    margin: 0 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0.895833px rgba(0, 0, 0, 0.48), 0px 0px 3.58333px rgba(0, 0, 0, 0.12);
+}
+.lockContent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    background-image: url('/img/lockBackGround.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.lockHead {
+    position: absolute;
+    bottom: 12px;
+    left: 18px;
+    display: flex;
+    align-items: center;
+    color: #bdbdbd;
+    font-weight: 500;
+    font-size: 14px;
+}
+.resourceNumber {
+    margin: 0 18px 0 4px;
+    color: #fff;
+}
+.lockImg {
+    text-align: center;
+}
+.lockBtn {
+    padding: 16px 0;
+    color: #242424;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+}
