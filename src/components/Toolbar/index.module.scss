@@ -1,0 +1,25 @@
+.container {
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 0.15rem;
+}
+.leftIcon {
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    .icon {
+        font-size: 0.25rem;
+    }
+}
+.rightIcon {
+    position: absolute;
+    top: 0.19rem;
+    right: 0.15rem;
+    .icon {
+        font-size: 0.25rem;
+    }
+}
+.title {
+    font-weight: 600;
+    text-align: center;
+}

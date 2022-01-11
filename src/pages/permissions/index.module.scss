@@ -1,0 +1,38 @@
+.container {
+    display: grid;
+    grid-gap: 0.18rem;
+    padding: 0.16rem 0.16rem;
+    .input {
+        padding-left: 0.1rem !important;
+        border: 1px solid #cccccc;
+        border-radius: 0.04rem;
+    }
+}
+.cancel {
+    color: #ff0050;
+}
+.loginBtn {
+    --border-radius: 10px;
+}
+.other {
+    margin: 0 0.05rem;
+    color: #ff0050;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.resetPassWord {
+    color: #ff0050;
+    text-align: center;
+}
+.msgLoginTitle {
+    color: #212121;
+    font-weight: bold;
+    font-size: 0.24rem;
+    line-height: 0.24rem;
+}
+.msgLoginDesc {
+    color: #7e7e7e;
+    font-weight: 500;
+    font-size: 0.14rem;
+    line-height: 0.17rem;
+}

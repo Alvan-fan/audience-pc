@@ -1,0 +1,60 @@
+@import '/public/style/mixin.scss';
+
+.skeletonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0.16rem;
+    & > :nth-child(even) {
+        margin-left: 0.12rem;
+    }
+}
+.container {
+    padding: 0 0.16rem;
+    columns: 2;
+    column-gap: 0.12rem;
+    img {
+        display: block;
+    }
+    video {
+        display: block;
+        width: 100%;
+    }
+}
+.galleryContent {
+    margin-bottom: 0.12rem;
+    break-inside: avoid;
+}
+.item {
+    position: relative;
+    margin-bottom: 0.08rem;
+    overflow: hidden;
+    border-radius: 6px;
+}
+.postTitle {
+    color: #242424;
+    font-weight: bold;
+    font-size: 0.12rem;
+    line-height: 0.12rem;
+    @include ellipsis-lines(2);
+}
+.lock {
+    img,
+    video {
+        filter: blur(4px);
+    }
+}
+.lockBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    padding: 0.05rem 0;
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.09rem;
+    line-height: 0.2rem;
+    text-align: center;
+    border: 1px solid #dde8e8;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+}

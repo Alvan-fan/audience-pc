@@ -1,0 +1,81 @@
+@import '/public/style/mixin.scss';
+
+.container {
+    box-sizing: border-box;
+    padding: 0.16rem 0;
+}
+.userInfo {
+    padding: 0 0.16rem;
+}
+.head {
+    position: relative;
+    display: flex;
+    margin-bottom: 0.16rem;
+    filter: drop-shadow(6 px 20 px 25 px rgba(119, 142, 165, 0.1));
+}
+.avatar {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+.userName {
+    position: absolute;
+    top: 0.05rem;
+    left: 50%;
+    font-weight: bold;
+    font-size: 0.18rem;
+    transform: translateX(-50%);
+}
+.nickName {
+    margin-bottom: 0.08rem;
+    color: #242424;
+    font-weight: bold;
+}
+.follower {
+    margin-bottom: 0.12rem;
+    font-weight: 500;
+    font-size: 0.14rem;
+}
+.bio {
+    font-size: 0.12rem;
+    @include ellipsis-lines(3);
+}
+.lockContainer {
+    margin: 0 0.2rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0.895833px rgba(0, 0, 0, 0.48), 0px 0px 3.58333px rgba(0, 0, 0, 0.12);
+}
+.lockContent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+    background-image: url('/img/lockBackGround.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.lockHead {
+    position: absolute;
+    bottom: 0.12rem;
+    left: 0.18rem;
+    display: flex;
+    align-items: center;
+    color: #bdbdbd;
+    font-weight: 500;
+    font-size: 0.14rem;
+}
+.resourceNumber {
+    margin: 0 0.18rem 0 0.04rem;
+    color: #fff;
+}
+.lockImg {
+    text-align: center;
+}
+.lockBtn {
+    padding: 0.16rem 0;
+    color: #242424;
+    font-weight: bold;
+    font-size: 0.14rem;
+    line-height: 0.16rem;
+    text-align: center;
+}

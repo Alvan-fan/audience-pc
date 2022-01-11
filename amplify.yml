@@ -1,0 +1,19 @@
+version: 1
+frontend:
+    phases:
+        preBuild:
+            commands:
+                - nvm install v16.13.1
+                - nvm use v16.13.1
+                - yarn install
+        build:
+            commands:
+                - nvm use v16.13.1
+                - yarn run build
+    artifacts:
+        baseDirectory: .next
+        files:
+            - '**/*'
+    cache:
+        paths:
+            - node_modules/**/*
