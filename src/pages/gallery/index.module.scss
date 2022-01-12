@@ -1,17 +1,16 @@
 @import '/public/style/mixin.scss';
 
 .skeletonContainer {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 0.16rem;
-    & > :nth-child(even) {
-        margin-left: 0.12rem;
-    }
+    display: grid; /*网格布局*/
+    grid-auto-flow: column; /*通过行或列的方式来依次填充*/
+    grid-gap: 0.2rem;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center center;
 }
 .container {
-    padding: 0 0.16rem;
-    columns: 2;
-    column-gap: 0.12rem;
+    columns: 3;
+    column-gap: 0.2rem;
     img {
         display: block;
     }
@@ -21,21 +20,28 @@
     }
 }
 .galleryContent {
-    margin-bottom: 0.12rem;
+    margin-bottom: 0.2rem;
     break-inside: avoid;
 }
 .item {
     position: relative;
     margin-bottom: 0.08rem;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 10px;
 }
 .postTitle {
-    color: #242424;
+    margin-bottom: 0.04rem;
+    color: #000;
     font-weight: bold;
-    font-size: 0.12rem;
-    line-height: 0.12rem;
-    @include ellipsis-lines(2);
+    font-size: 0.16rem;
+    line-height: 0.28rem;
+    @include ellipsis-lines(1);
+}
+.postDesc {
+    color: #424242;
+    font-size: 0.16rem;
+    line-height: 0.2rem;
+    @include ellipsis-lines(4);
 }
 .lock {
     img,

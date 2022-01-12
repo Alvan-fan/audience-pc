@@ -12,7 +12,6 @@ import ss from './index.module.scss';
 interface IProps {
     visible: boolean;
     className?: string;
-    fullScreen?: boolean;
     animated?: boolean;
     onDidDismiss?: () => void;
     header?: React.ReactNode;
@@ -22,7 +21,6 @@ const Modal: React.FC<IProps> = (props) => {
     const {
         visible,
         onDidDismiss,
-        fullScreen = true,
         animated = true,
         className,
         header,
@@ -32,11 +30,11 @@ const Modal: React.FC<IProps> = (props) => {
     } = props;
     return (
         <IonModal
+            mode="ios"
+            backdropDismiss={false}
             onDidDismiss={onDidDismiss}
             isOpen={visible}
-            cssClass={cx(className, {
-                [ss.modalContainer]: !fullScreen,
-            })}
+            cssClass={cx(ss.modalContainer, className)}
             animated={animated}
             {...restProps}
         >

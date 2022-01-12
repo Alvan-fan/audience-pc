@@ -2,19 +2,23 @@
  * @file 作者首页
  */
 
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import QuickSubCard from '@/components/QuickSubCard';
+import Tabs from '@/components/Tabs';
+import Gallery from '@/pages/gallery';
 import Links from '@/pages/links';
 import Permissions from '@/pages/permissions';
+import Subscribe from '@/pages/subscribe';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { getI18nLanguage } from '@/utils';
-import { IonAvatar, IonButton } from '@ionic/react';
+import { IonAvatar } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -31,6 +35,23 @@ const Creator: React.FC = () => {
         }
     }, [userInfo]);
 
+    const tabConfig = useMemo(() => {
+        return [
+            {
+                key: '1',
+                label: 'All Posts',
+            },
+            {
+                key: '2',
+                label: 'Exclusive Posts',
+            },
+        ];
+    }, []);
+
+    const handleChangeTab = useCallback((key: string) => {
+        console.log('tab change key', key);
+    }, []);
+
     if (!userInfo) {
         return null;
     }
@@ -46,15 +67,7 @@ const Creator: React.FC = () => {
                         <IonAvatar className={ss.avatar}>
                             <img src={avatar} />
                         </IonAvatar>
-                        <IonButton
-                            mode="ios"
-                            onClick={() => {
-                                console.log(111);
-                            }}
-                            className={ss.btn}
-                        >
-                            {t('Subscribe')}
-                        </IonButton>
+                        <Subscribe />
                     </div>
                 </div>
                 <div className={ss.userInfo}>
@@ -67,8 +80,11 @@ const Creator: React.FC = () => {
                     </div>
                     <pre className={ss.bio}>{bio}</pre>
                 </div>
+                <Links />
                 <div className={ss.content}>
-                    <Links />
+                    <QuickSubCard />
+                    <Tabs config={tabConfig} onChange={handleChangeTab} />
+                    <Gallery />
                 </div>
             </div>
             <div className={ss.sidebar}>123</div>

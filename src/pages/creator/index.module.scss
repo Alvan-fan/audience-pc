@@ -1,23 +1,27 @@
 .container {
     position: relative;
     display: flex;
-    margin-top: 20px;
+    min-width: 1440px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0.2rem 1.9rem 0;
 }
 
 // 中间content
 .main {
     width: 66%;
-    height: 1000px;
+    overflow: hidden;
     background-color: #fff;
+    border-radius: 5px;
 }
 .banner {
     position: relative;
-    margin-bottom: 90px;
+    margin-bottom: 0.9rem;
     background-image: url('/img/homeBanner.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     .mask {
-        height: 160px;
+        height: 1.6rem;
         background: linear-gradient(
             4.97deg,
             rgba(104, 104, 104, 0.8) -16.56%,
@@ -26,63 +30,60 @@
     }
     .avatarContainer {
         position: absolute;
-        top: 100px;
+        top: 1rem;
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
         width: 100%;
-        padding: 0 20px 0 12px;
+        padding: 0 0.2rem 0 0.12rem;
     }
     .avatar {
-        width: 124px;
-        height: 124px;
+        width: 1.24rem;
+        height: 1.24rem;
         border: 8px solid #fff;
-    }
-    .btn {
-        width: 196px;
-        height: 42px;
-        font-weight: bold;
-        font-size: 14px;
     }
 }
 .userInfo {
-    padding: 0 20px;
+    padding: 0 0.2rem;
     .nameContainer {
         display: flex;
         align-items: center;
-        margin-bottom: 17px;
+        margin-bottom: 0.17rem;
     }
     .nickName {
-        margin-right: 8px;
+        margin-right: 0.08rem;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 0.18rem;
         font-style: normal;
-        line-height: 18px;
+        line-height: 0.18rem;
     }
     .userName {
         color: #bdbdbd;
-        font-size: 16px;
-        line-height: 14px;
+        font-size: 0.16rem;
+        line-height: 0.14rem;
     }
     .follower {
-        margin-bottom: 8px;
-        font-size: 16px;
-        line-height: 24px;
+        margin-bottom: 0.08rem;
+        font-size: 0.16rem;
+        line-height: 0.24rem;
     }
     .bio {
-        font-size: 16px;
-        line-height: 24px;
         margin-bottom: 0;
+        font-size: 0.16rem;
+        line-height: 0.24rem;
     }
+}
+.content {
+    padding: 0.1rem 0.2rem 0.3rem;
 }
 
 // 右侧组件
 .sidebar {
     position: sticky;
     position: -webkit-sticky;
-    top: 20px;
+    top: 0.2rem;
     width: 34%;
-    height: 300px;
-    margin-left: 20px;
+    height: 3rem;
+    margin-left: 0.2rem;
     background-color: #fff;
 }

@@ -2,26 +2,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
-    padding: 0 40px;
+    height: 0.6rem;
+    padding: 0 0.4rem;
 }
 .headLeft {
     display: flex;
     align-items: center;
     b {
-        margin-left: 8px;
-        font-size: 16px;
-        line-height: 24px;
+        margin-left: 0.08rem;
+        font-size: 0.16rem;
+        line-height: 0.24rem;
     }
 }
 .headRight {
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 0.18rem;
+    line-height: 0.24rem;
 }
 .main {
-    min-width: 1440px;
-    height: 100%;
-    padding: 0 190px;
-    overflow-y: scroll;
-    background-color: #fafafa;
+    --background: #fafafa;
 }

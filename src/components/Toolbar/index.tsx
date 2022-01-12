@@ -7,7 +7,7 @@ import { IonIcon } from '@ionic/react';
 import ss from './index.module.scss';
 
 interface IProps {
-    title: string;
+    title?: string;
     closeIcon?: boolean;
     renderLeft?: React.ReactNode;
     renderRight?: React.ReactNode;
@@ -19,14 +19,14 @@ const Toolbar: React.FC<IProps> = (props) => {
     const { closeIcon = false, renderLeft, renderRight, title, style, className, onClick } = props;
     return (
         <div style={style} className={cx(ss.container, className)}>
-            <div className={ss.leftIcon}>
-                {closeIcon && !renderLeft && (
+            <div className={ss.leftIcon}>{renderLeft}</div>
+            <div className={ss.title}>{title}</div>
+            <div className={ss.rightIcon}>
+                {closeIcon && !renderRight && (
                     <IonIcon icon={closeOutline} onClick={onClick} className={ss.icon} />
                 )}
-                {renderLeft}
+                {renderRight}
             </div>
-            <div className={ss.title}>{title}</div>
-            <div className={ss.rightIcon}>{renderRight}</div>
         </div>
     );
 };

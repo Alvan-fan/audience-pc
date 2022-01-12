@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 
 import EmptyPage from '@/components/EmptyPage';
+import LockCard from '@/components/LockCard';
 import Skeleton from '@/components/Skeleton';
 import { addStore, useStore } from '@/store';
 import type { GalleryStoreType, IPostListType } from '@/store/galleryStore';
@@ -21,6 +22,7 @@ const Gallery: React.FC = () => {
     const store: GalleryStoreType = addStore('galleryStore', galleryStore()).galleryStore;
     const globalStore: GlobalStoreType = useStore().globalStore;
     const { postList, isLoad, loading } = store;
+    const { userInfo } = globalStore;
     const { userName } = router.query;
 
     useEffect(() => {
@@ -46,13 +48,17 @@ const Gallery: React.FC = () => {
     if (loading) {
         return (
             <div className={ss.skeletonContainer}>
-                <Skeleton rows={6} style={{ width: 'calc(50% - 0.06rem)', height: '1.5rem' }} />
+                <Skeleton rows={9} style={{ width: '100%', height: '2.5rem', margin: 0 }} />
             </div>
         );
     }
 
     if (postList.length === 0) {
         return <EmptyPage />;
+    }
+
+    if (userInfo?.homepage_locked) {
+        return <LockCard />;
     }
 
     return (
@@ -79,6 +85,9 @@ const Gallery: React.FC = () => {
                                 {item.play_name && (
                                     <div className={ss.postTitle}>{item.play_name}</div>
                                 )}
+                                {item.play_description && (
+                                    <div className={ss.postDesc}>{item.play_description}</div>
+                                )}
                             </div>
                         );
                     }
@@ -101,6 +110,9 @@ const Gallery: React.FC = () => {
                                 )}
                             </div>
                             {item.play_name && <div className={ss.postTitle}>{item.play_name}</div>}
+                            {item.play_description && (
+                                <div className={ss.postDesc}>{item.play_description}</div>
+                            )}
                         </div>
                     );
                 })}

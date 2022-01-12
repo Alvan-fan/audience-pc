@@ -1,6 +1,10 @@
 .container {
     margin-top: 0.18rem;
 }
+.modalHead {
+    display: flex;
+    align-items: center;
+}
 .content {
     padding: 0.24rem;
 }
@@ -19,10 +23,8 @@
     line-height: 0.17rem;
 }
 .btn {
-    width: 100%;
+    width: 1.96rem;
     height: 0.42rem;
-    font-weight: bold;
-    font-size: 0.14rem;
 }
 .nextBtn {
     width: 100%;

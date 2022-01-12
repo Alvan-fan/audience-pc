@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PhoneInput from 'react-phone-input-2';
+import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 
 import { getCountryCode } from '@/utils';
@@ -9,10 +10,12 @@ import ss from './index.module.scss';
 
 interface IProps {
     value: string;
+    inputClass?: string;
+    buttonClass?: string;
     onChange: (value: string) => void;
 }
-const PhoneNumber: React.FC<IProps> = (props) => {
-    const { value, onChange } = props;
+const PhoneNumberInput: React.FC<IProps> = (props) => {
+    const { value, inputClass, buttonClass, onChange } = props;
     const { t } = useTranslation();
 
     const handleFilterNumber = useCallback(
@@ -29,7 +32,8 @@ const PhoneNumber: React.FC<IProps> = (props) => {
     return (
         <div className={ss.container}>
             <PhoneInput
-                containerClass="phone-number-input common-input"
+                inputClass={cx(ss.input, inputClass)}
+                buttonClass={cx(ss.inputBtn, buttonClass)}
                 country={getCountryCode()}
                 placeholder={t('Enter Phone Number')}
                 value={value}
@@ -51,4 +55,4 @@ const PhoneNumber: React.FC<IProps> = (props) => {
     );
 };
 
-export default PhoneNumber;
+export default PhoneNumberInput;

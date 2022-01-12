@@ -22,7 +22,7 @@ import type { SubscribeStoreType, TierListType } from '@/store/subscribeStore';
 import subscribeStore from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
 import { logEvent } from '@/utils/analytics';
-import { IonButton, IonIcon, IonLoading, IonSpinner, useIonToast } from '@ionic/react';
+import { IonAvatar, IonButton, IonIcon, IonLoading, IonSpinner, useIonToast } from '@ionic/react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 import ss from './index.module.scss';
@@ -218,19 +218,34 @@ const Subscribe: React.FC = () => {
         return null;
     }
 
-    const { name, username } = userInfo;
+    const { name, username, avatar } = userInfo;
 
     return (
         <div className={ss.container}>
             <IonLoading isOpen={subscribeLoading} message={t('Please wait')} />
-            <IonButton onClick={toggleModal} className={ss.btn}>
+            <IonButton mode="ios" className={ss.btn} onClick={toggleModal}>
                 {t('Subscribe')}
             </IonButton>
             <Modal
-                fullScreen={false}
                 onDidDismiss={handleDidDismiss}
                 visible={subscribeVisible}
-                header={<Toolbar closeIcon title={t('Subscribe')} onClick={toggleModal} />}
+                header={
+                    <Toolbar
+                        closeIcon
+                        renderLeft={
+                            <div className={ss.modalHead}>
+                                <IonAvatar className={ss.avatar}>
+                                    <img src={avatar} />
+                                </IonAvatar>
+                                <div className={ss.info}>
+                                    <div className={ss.name}>{name}</div>
+                                    <div className={ss.modalDesc}>Subscribe to My House Studio</div>
+                                </div>
+                            </div>
+                        }
+                        onClick={toggleModal}
+                    />
+                }
             >
                 {step === StepMap[StepEnum.phone] && (
                     <div className={ss.content}>

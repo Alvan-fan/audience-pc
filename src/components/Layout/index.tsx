@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
-import { IonApp, IonHeader, IonToast } from '@ionic/react';
+import { IonApp, IonContent, IonHeader, IonToast } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -27,7 +27,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <div className={ss.headRight}>Create on House Studio</div>
                 </div>
             </IonHeader>
-            <main className={ss.main}>{children}</main>
+            <IonContent className={ss.main}>{children}</IonContent>
             <IonToast
                 isOpen={visible}
                 message={msg}

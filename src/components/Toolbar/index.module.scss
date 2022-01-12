@@ -1,20 +1,22 @@
 .container {
     position: relative;
+    min-height: 0.5rem;
+    padding: 0.2rem 0.24rem 0;
+    box-sizing: content-box;
     border-bottom: 1px solid #e6e6e6;
-    padding: 0.15rem;
 }
 .leftIcon {
     position: absolute;
-    top: 0.15rem;
-    left: 0.15rem;
+    top: 0.2rem;
+    left: 0.24rem;
     .icon {
         font-size: 0.25rem;
     }
 }
 .rightIcon {
     position: absolute;
-    top: 0.19rem;
-    right: 0.15rem;
+    top: 0.26rem;
+    right: 0.24rem;
     .icon {
         font-size: 0.25rem;
     }

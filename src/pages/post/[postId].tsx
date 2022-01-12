@@ -186,7 +186,6 @@ const Post: React.FC = () => {
             </IonContent>
             <Modal
                 visible={visible}
-                fullScreen={false}
                 header={<Toolbar closeIcon title={t('Comments')} onClick={hide} />}
                 footer={
                     <div className={ss.commentInput}>
