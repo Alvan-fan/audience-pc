@@ -11,21 +11,29 @@ import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
-import { IonButton } from '@ionic/react';
+import { IonButton, useIonToast } from '@ionic/react';
 
 import ss from './index.module.scss';
 
 const QuickSubCard: React.FC = () => {
     const { t } = useTranslation();
+    const [present] = useIonToast();
     const globalStore: GlobalStoreType = useStore().globalStore;
     const store: SubscribeStoreType = useStore().subscribeStore;
     const { phoneNumber } = store;
     const { subscribeVisible } = globalStore;
 
     const toggleModal = useCallback(() => {
+        if (!phoneNumber) {
+            return present({
+                color: 'danger',
+                message: t('please check that all fields are filled out correctly'),
+                duration: 1000,
+            });
+        }
         store.setValue('step', StepMap[StepEnum.tier]);
         globalStore.setGlobalState('subscribeVisible', !subscribeVisible);
-    }, [subscribeVisible]);
+    }, [phoneNumber, subscribeVisible]);
 
     return (
         <div className={ss.container}>

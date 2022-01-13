@@ -20,12 +20,14 @@ export interface TierListType {
 export enum StepEnum {
     phone = 0,
     tier = 1,
-    success = 2,
+    pay = 2,
+    success = 3,
 }
 
 export const StepMap = {
     [StepEnum.phone]: 'phone',
     [StepEnum.tier]: 'tier',
+    [StepEnum.pay]: 'pay',
     [StepEnum.success]: 'success',
 };
 

@@ -1,27 +1,27 @@
 .container {
     position: relative;
-    min-height: 0.5rem;
-    padding: 0.2rem 0.24rem 0;
     box-sizing: content-box;
-    border-bottom: 1px solid #e6e6e6;
+    min-height: 0.4rem;
+    padding: 0.24rem 0.36rem 0;
 }
 .leftIcon {
     position: absolute;
-    top: 0.2rem;
-    left: 0.24rem;
+    top: 0.24rem;
+    left: 0.36rem;
     .icon {
         font-size: 0.25rem;
     }
 }
 .rightIcon {
     position: absolute;
-    top: 0.26rem;
-    right: 0.24rem;
+    top: 0.3rem;
+    right: 0.36rem;
     .icon {
         font-size: 0.25rem;
     }
 }
 .title {
     font-weight: 600;
+    line-height: 0.4rem;
     text-align: center;
 }
