@@ -1,8 +1,9 @@
 /**
  * @file Tier 列表组件
  */
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import cx from 'classnames';
+import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 
 // import { useTranslation } from 'next-i18next';
@@ -11,7 +12,7 @@ import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType, TierListType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
 import { logEvent } from '@/utils/analytics';
-import { IonButton, IonSlide, IonSlides, IonSpinner } from '@ionic/react';
+import { IonButton, IonIcon, IonSlide, IonSlides, IonSpinner } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -19,8 +20,14 @@ const TierList: React.FC = () => {
     // const { t } = useTranslation();
     const store: SubscribeStoreType = useStore().subscribeStore;
     const globalStore: GlobalStoreType = useStore().globalStore;
+    const [swiper, setSwiper] = useState<any>({});
+    const [hideSlideBar, setHideSlideBar] = useState<string>('hidePrev');
     const { userInfo } = globalStore;
     const { phoneNumber, tierList } = store;
+
+    async function getSwiperInstance (this: any) {
+        setSwiper(await this.getSwiper());
+    }
 
     const handleSubscribeFree = useCallback(
         async (data: TierListType) => {
@@ -52,6 +59,35 @@ const TierList: React.FC = () => {
         [handleSubscribeFree],
     );
 
+    const RenderSlideBar = useCallback(() => {
+        return (
+            <>
+                <IonIcon
+                    className={cx(ss.slideBtn, ss.right, {
+                        [ss.hide]: hideSlideBar === 'hideNext',
+                    })}
+                    icon={arrowForwardOutline}
+                    onClick={() => {
+                        swiper.slideNext();
+                        swiper.isEnd && setHideSlideBar('hideNext');
+                    }}
+                />
+                <div>
+                    <IonIcon
+                        className={cx(ss.slideBtn, ss.left, {
+                            [ss.hide]: hideSlideBar === 'hidePrev',
+                        })}
+                        icon={arrowBackOutline}
+                        onClick={() => {
+                            swiper.slidePrev();
+                            swiper.isBeginning && setHideSlideBar('hidePrev');
+                        }}
+                    />
+                </div>
+            </>
+        );
+    }, [swiper, hideSlideBar]);
+
     if (!tierList) {
         return (
             <div className={ss.noData}>
@@ -62,7 +98,9 @@ const TierList: React.FC = () => {
 
     return (
         <div className={ss.container}>
+            <RenderSlideBar />
             <IonSlides
+                onIonSlidesDidLoad={getSwiperInstance}
                 options={{
                     slidesPerView: 'auto',
                 }}

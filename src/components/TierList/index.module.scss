@@ -1,5 +1,27 @@
 .container {
+    position: relative;
     margin-top: 0.2rem;
+}
+.slideBtn {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    padding: 0.05rem;
+    color: #fff;
+    font-size: 0.16rem;
+    background: #424242;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.slideBtn.left {
+    left: -0.13rem;
+}
+.slideBtn.right {
+    right: -0.13rem;
+}
+.hide {
+    display: none;
 }
 .noData {
     display: flex;
