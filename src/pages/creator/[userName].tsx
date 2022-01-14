@@ -9,12 +9,12 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import Gallery from '@/components/gallery';
+import Links from '@/components/links';
+import Permissions from '@/components/permissions';
 import QuickSubCard from '@/components/QuickSubCard';
+import Subscribe from '@/components/subscribe';
 import Tabs from '@/components/Tabs';
-import Gallery from '@/pages/gallery';
-import Links from '@/pages/links';
-import Permissions from '@/pages/permissions';
-import Subscribe from '@/pages/subscribe';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { getI18nLanguage } from '@/utils';
