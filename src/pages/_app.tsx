@@ -1,6 +1,7 @@
 // import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import App from 'next/app';
+// import { useRouter } from 'next/router';
 import { useCookie } from 'next-cookie';
 import { appWithTranslation } from 'next-i18next';
 
@@ -32,9 +33,14 @@ import '@ionic/react/css/display.css';
 const stripePromise = loadStripe(STRIPE_KEY as string);
 
 const MyApp = (props: any) => {
+    // const router = useRouter();
     const { Component, pageProps } = props;
 
     useEffect(() => {
+        // if (window) {
+        //     const path = router.asPath;
+        //     isMobile() && router.push(`http://localhost:3001${path}`);
+        // }
         initGA(GA_TRACKING_ID);
         initUserState(
             cookie.get('ACCESS_TOKEN'),

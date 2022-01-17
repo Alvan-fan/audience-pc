@@ -11,6 +11,7 @@ import { useModalVisible } from '@/hooks';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType, TierListType } from '@/store/subscribeStore';
+import { StepEnum, StepMap } from '@/store/subscribeStore';
 // import { logEvent } from '@/utils/analytics';
 import { IonButton, IonIcon } from '@ionic/react';
 
@@ -31,7 +32,9 @@ const MemberShipTiers: React.FC = () => {
     }, [userInfo]);
 
     const handleSubscribe = useCallback((data: TierListType) => {
-        console.log(data);
+        store.setValue('chooseTier', data);
+        store.setValue('step', StepMap[StepEnum.memberShip]);
+        globalStore.setGlobalState('subscribeVisible', true);
     }, []);
 
     const TierItem = useCallback(() => {

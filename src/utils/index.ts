@@ -42,11 +42,6 @@ export const isLogin = () => {
     return !!(cookie.get('ACCESS_TOKEN') && !isExpired());
 };
 
-// 判断是否为手机端
-export const isMobile = () => {
-    return /mobile/i.test(navigator.userAgent);
-};
-
 // 全局导出获取token方法
 export const getToken = (url: string) => {
     let key = 'ACCESS_TOKEN';

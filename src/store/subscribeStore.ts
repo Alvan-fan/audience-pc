@@ -21,13 +21,15 @@ export enum StepEnum {
     phone = 0,
     tier = 1,
     pay = 2,
-    success = 3,
+    memberShip = 3,
+    success = 4,
 }
 
 export const StepMap = {
     [StepEnum.phone]: 'phone',
     [StepEnum.tier]: 'tier',
     [StepEnum.pay]: 'pay',
+    [StepEnum.memberShip]: 'memberShip',
     [StepEnum.success]: 'success',
 };
 

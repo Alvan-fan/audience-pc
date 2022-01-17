@@ -63,6 +63,7 @@ const Subscribe: React.FC = () => {
                 color: 'danger',
                 message: t('please check that all fields are filled out correctly'),
                 duration: 1000,
+                mode: 'ios',
             });
         }
         store.setValue('step', StepMap[StepEnum.tier]);
@@ -132,6 +133,22 @@ const Subscribe: React.FC = () => {
         }
     }, [chooseTier, phoneNumber, userInfo]);
 
+    const handleSubscribeFree = useCallback(async () => {
+        if (!chooseTier || !userInfo) {
+            return;
+        }
+        store.setValue('subscribeLoading', true);
+        logEvent('subscribe free', 'click free subscribe');
+        const { tier_id } = chooseTier;
+        const { id } = userInfo;
+        try {
+            await store.subscribeFreeTier(phoneNumber, tier_id, id);
+        } finally {
+            store.setValue('subscribeLoading', false);
+        }
+        store.setValue('step', StepMap[StepEnum.success]);
+    }, [chooseTier, phoneNumber, userInfo]);
+
     const handlePrevStep = useCallback(() => {
         if (step === StepMap[StepEnum.tier]) {
             return store.setValue('step', StepMap[StepEnum.phone]);
@@ -142,7 +159,30 @@ const Subscribe: React.FC = () => {
         }
     }, [step]);
 
+    const handleSubscribe = useCallback(() => {
+        if (!chooseTier) {
+            return null;
+        }
+        const { tier_price } = chooseTier;
+        if (!phoneNumber) {
+            return present({
+                color: 'danger',
+                message: t('please check that all fields are filled out correctly'),
+                duration: 1000,
+                mode: 'ios',
+            });
+        }
+        if (tier_price === '0.00') {
+            return handleSubscribeFree();
+        }
+        handleSubscribePay();
+    }, [chooseTier, handleSubscribePay, phoneNumber]);
+
     const RenderFooter = useCallback(() => {
+        if (!chooseTier) {
+            return null;
+        }
+        const { tier_price } = chooseTier;
         switch (step) {
             case StepMap[StepEnum.phone]:
                 return (
@@ -179,10 +219,31 @@ const Subscribe: React.FC = () => {
                         </IonButton>
                     </div>
                 );
+            case StepMap[StepEnum.memberShip]:
+                return (
+                    <div className={ss.footer}>
+                        <IonButton
+                            disabled={tier_price !== '0.00' ? disableBtn : false}
+                            className={ss.nextBtn}
+                            onClick={handleSubscribe}
+                        >
+                            {t('Subscribe')}
+                        </IonButton>
+                    </div>
+                );
             default:
                 return null;
         }
-    }, [disableBtn, handleNextStep, handlePrevStep, handleSubscribePay, step]);
+    }, [
+        chooseTier,
+        disableBtn,
+        handleNextStep,
+        handlePrevStep,
+        handleSubscribe,
+        handleSubscribePay,
+        step,
+        t,
+    ]);
 
     if (!userInfo) {
         return null;
@@ -241,7 +302,7 @@ const Subscribe: React.FC = () => {
                     </div>
                 )}
                 {step === StepMap[StepEnum.pay] && (
-                    <div className={cx(ss.content, ss.payContent)}>
+                    <div className={ss.content}>
                         <div className={ss.title}>Step 3/3: Complete your purchase</div>
                         <div className={ss.tierInfo}>
                             <div>{chooseTier?.tier_name}</div>
@@ -262,6 +323,42 @@ const Subscribe: React.FC = () => {
                             }}
                         />
                         <ApplePay />
+                    </div>
+                )}
+                {step === StepMap[StepEnum.memberShip] && (
+                    <div className={ss.content}>
+                        <div className={ss.tierInfo} style={{ marginTop: 0 }}>
+                            <div>{chooseTier?.tier_name}</div>
+                            <div>{`$${chooseTier?.tier_price}/Month`}</div>
+                        </div>
+                        <div className={ss.tierTip}>Monthly Charge</div>
+                        <div className={ss.tierTip}>
+                            Billing Starts: {dayjs().format('YYYY-MM-DD')}
+                        </div>
+                        <div className={ss.totalPrice}>
+                            <div>Total Today</div>
+                            <div>{`$${chooseTier?.tier_price}`}</div>
+                        </div>
+                        <div className={ss.label}>Phone Number</div>
+                        <PhoneNumberInput
+                            value={phoneNumber}
+                            onChange={(value: string) => {
+                                store.setValue('phoneNumber', value);
+                            }}
+                        />
+                        {chooseTier?.tier_price !== '0.00' && (
+                            <>
+                                <StripeCardElement
+                                    className={cx(ss.cardElement, {
+                                        [ss.memberShip]: chooseTier?.tier_price !== '0.00',
+                                    })}
+                                    onReady={() => {
+                                        setDisableBtn(false);
+                                    }}
+                                />
+                                <ApplePay />
+                            </>
+                        )}
                     </div>
                 )}
                 {step === StepMap[StepEnum.success] && (
