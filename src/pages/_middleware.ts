@@ -7,9 +7,10 @@ export async function middleware (req: NextRequest) {
     const {
         //@ts-ignore
         ua: { ua },
-        url,
+        nextUrl: { pathname },
     } = req;
+
     if (/mobile/i.test(ua)) {
-        return NextResponse.redirect(`${REDIRECT_DOMAIN}${url}`);
+        return NextResponse.redirect(`${REDIRECT_DOMAIN}${pathname}`);
     }
 }

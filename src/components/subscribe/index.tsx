@@ -179,10 +179,6 @@ const Subscribe: React.FC = () => {
     }, [chooseTier, handleSubscribePay, phoneNumber]);
 
     const RenderFooter = useCallback(() => {
-        if (!chooseTier) {
-            return null;
-        }
-        const { tier_price } = chooseTier;
         switch (step) {
             case StepMap[StepEnum.phone]:
                 return (
@@ -223,7 +219,7 @@ const Subscribe: React.FC = () => {
                 return (
                     <div className={ss.footer}>
                         <IonButton
-                            disabled={tier_price !== '0.00' ? disableBtn : false}
+                            disabled={chooseTier?.tier_price !== '0.00' ? disableBtn : false}
                             className={ss.nextBtn}
                             onClick={handleSubscribe}
                         >
