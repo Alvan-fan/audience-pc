@@ -1,0 +1,9 @@
+{
+    "apps": [
+      {
+        "name": "audience pc",
+        "script": "yarn",
+        "args": "start"
+      }
+    ]
+  }
