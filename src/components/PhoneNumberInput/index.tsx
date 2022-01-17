@@ -1,3 +1,7 @@
+/**
+ * @file 重新封装手机号输入组件
+ */
+
 import React, { useCallback } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import cx from 'classnames';

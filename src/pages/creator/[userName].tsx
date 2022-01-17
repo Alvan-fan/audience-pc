@@ -11,19 +11,25 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Gallery from '@/components/gallery';
 import Links from '@/components/links';
+import MemberShipTiers from '@/components/MemberShipTiers';
 import Permissions from '@/components/permissions';
 import QuickSubCard from '@/components/QuickSubCard';
 import Subscribe from '@/components/subscribe';
+import Support from '@/components/Support';
 import Tabs from '@/components/Tabs';
-import { useStore } from '@/store';
+import { addStore, useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
+import subscribeStore from '@/store/subscribeStore';
+import supportStore from '@/store/supportStore';
 import { getI18nLanguage } from '@/utils';
-import { IonAvatar } from '@ionic/react';
+import { IonAvatar, IonLoading } from '@ionic/react';
 
 import ss from './index.module.scss';
 
 const Creator: React.FC = () => {
     const router = useRouter();
+    addStore('subscribeStore', subscribeStore());
+    addStore('supportStore', supportStore());
     const store: GlobalStoreType = useStore().globalStore;
     const { t } = useTranslation();
     const { userName } = router.query;
@@ -53,7 +59,7 @@ const Creator: React.FC = () => {
     }, []);
 
     if (!userInfo) {
-        return null;
+        return <IonLoading isOpen={true} message={t('Please wait')} />;
     }
 
     const { avatar, bio, name, number_follower, username } = userInfo;
@@ -87,7 +93,10 @@ const Creator: React.FC = () => {
                     <Gallery />
                 </div>
             </div>
-            <div className={ss.sidebar}>123</div>
+            <div className={ss.sidebar}>
+                <MemberShipTiers />
+                <Support />
+            </div>
             <Permissions creatorName={username} />
         </div>
     );

@@ -1,3 +1,7 @@
+/**
+ * @file tab切换组件
+ */
+
 import React, { useCallback, useState } from 'react';
 import cx from 'classnames';
 

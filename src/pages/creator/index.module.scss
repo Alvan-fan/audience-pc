@@ -10,6 +10,7 @@
 // 中间content
 .main {
     width: 66%;
+    height: 100%;
     overflow: hidden;
     background-color: #fff;
     border-radius: 5px;
@@ -83,7 +84,7 @@
     position: -webkit-sticky;
     top: 0.2rem;
     width: 34%;
-    height: 3rem;
+    height: 100%;
     margin-left: 0.2rem;
-    background-color: #fff;
+    background-color: #fafafa;
 }

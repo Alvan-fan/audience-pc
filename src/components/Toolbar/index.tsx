@@ -1,3 +1,7 @@
+/**
+ * @file modal使用的header bar
+ */
+
 import React from 'react';
 import cx from 'classnames';
 import { closeOutline } from 'ionicons/icons';

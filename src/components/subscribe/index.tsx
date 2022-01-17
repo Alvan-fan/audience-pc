@@ -2,7 +2,7 @@
  * @file 订阅相关
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import confetti from '/public/img/confetti.png';
 import cx from 'classnames';
 import dayjs from 'dayjs';
@@ -17,10 +17,9 @@ import PhoneNumberInput from '@/components/PhoneNumberInput';
 import StripeCardElement from '@/components/StripeCardElement';
 import TierList from '@/components/TierList';
 import Toolbar from '@/components/Toolbar';
-import { addStore, useStore } from '@/store';
+import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType } from '@/store/subscribeStore';
-import subscribeStore from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
 import { logEvent } from '@/utils/analytics';
 import { IonAvatar, IonButton, IonIcon, IonLoading, useIonToast } from '@ionic/react';
@@ -34,17 +33,18 @@ const Subscribe: React.FC = () => {
     const stripe = useStripe();
     const elements = useElements();
     const globalStore: GlobalStoreType = useStore().globalStore;
-    const store: SubscribeStoreType = addStore('subscribeStore', subscribeStore()).subscribeStore;
+    const store: SubscribeStoreType = useStore().subscribeStore;
     const { subscribeVisible, userInfo } = globalStore;
     const { step, phoneNumber, chooseTier, subscribeLoading } = store;
     const [disableBtn, setDisableBtn] = useState<boolean>(true);
 
-    useEffect(() => {
-        if (userInfo && step === StepMap[StepEnum.tier]) {
-            const { id } = userInfo;
-            store.getTiers(id);
-        }
-    }, [step, userInfo]);
+    // 如果以后首页的tier列表和订阅里面的不一致的时候需要
+    // useEffect(() => {
+    //     if (userInfo && step === StepMap[StepEnum.tier]) {
+    //         const { id } = userInfo;
+    //         store.getTiers(id);
+    //     }
+    // }, [step, userInfo]);
 
     const toggleModal = useCallback(() => {
         globalStore.setGlobalState('subscribeVisible', !subscribeVisible);
@@ -80,21 +80,21 @@ const Subscribe: React.FC = () => {
                     color: 'danger',
                 });
             }
-            const stripeResult = await stripe.createPaymentMethod({
-                type: 'card',
-                //@ts-ignore
-                card: elements.getElement(CardElement),
-            });
-            if (stripeResult.error) {
-                return present({
-                    message: stripeResult.error.message,
-                    duration: 1000,
-                    color: 'danger',
-                });
-            }
-            const { price_id, tier_id } = chooseTier;
-            const { id } = userInfo;
             try {
+                const stripeResult = await stripe.createPaymentMethod({
+                    type: 'card',
+                    //@ts-ignore
+                    card: elements.getElement(CardElement),
+                });
+                if (stripeResult.error) {
+                    return present({
+                        message: stripeResult.error.message,
+                        duration: 1000,
+                        color: 'danger',
+                    });
+                }
+                const { price_id, tier_id } = chooseTier;
+                const { id } = userInfo;
                 await store.createSubscription({
                     customerId: customer_id,
                     paymentMethodId: stripeResult.paymentMethod.id,

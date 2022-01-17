@@ -1,33 +1,17 @@
 /**
- * @file 打赏页
+ * @file 打赏组件
  */
-import React, { useCallback, useEffect, useState } from 'react';
-import { arrowBackOutline } from 'ionicons/icons';
+import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
-import type { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import Modal from '@/components/Modal';
 import PhoneNumberInput from '@/components/PhoneNumberInput';
 import StripeCardElement from '@/components/StripeCardElement';
-import { useModalVisible } from '@/hooks';
-import { addStore, useStore } from '@/store';
+import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SupportStoreType } from '@/store/supportStore';
-import supportStore from '@/store/supportStore';
-import { getI18nLanguage } from '@/utils';
-import {
-    IonAvatar,
-    IonButton,
-    IonContent,
-    IonIcon,
-    IonInput,
-    IonLoading,
-    IonTextarea,
-    useIonToast,
-} from '@ionic/react';
+import { StepEnum, StepMap } from '@/store/supportStore';
+import { IonAvatar, IonButton, IonInput, IonLoading, IonTextarea, useIonToast } from '@ionic/react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 import ss from './index.module.scss';
@@ -60,25 +44,19 @@ const Support: React.FC = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [present] = useIonToast();
-    const [isPay, show, hide] = useModalVisible();
-    const [result, showResult, hideResult] = useModalVisible();
     const [disable, setDisable] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
     const globalStore: GlobalStoreType = useStore().globalStore;
-    const store: SupportStoreType = addStore('supportStore', supportStore()).supportStore;
+    const store: SupportStoreType = useStore().supportStore;
 
     const { userInfo } = globalStore;
-    const { amount, supportersName, remark, phoneNumber } = store;
-    const { userName } = router.query;
-
-    useEffect(() => {
-        if (!userInfo) {
-            globalStore.setUserInfo(userName as string);
-        }
-    }, [userInfo]);
+    const { step, amount, supportersName, remark, phoneNumber } = store;
 
     const handleSubmit = useCallback(async () => {
+        if (step === StepMap[StepEnum.support]) {
+            setDisable(true);
+            return store.setValue('step', StepMap[StepEnum.pay]);
+        }
         if (!store.phoneNumber) {
             return present({
                 message: t('please check that all fields are filled out correctly'),
@@ -111,14 +89,12 @@ const Support: React.FC = () => {
                     });
                     throw new Error('stripe confirm faild!');
                 }
-                showResult();
-                hide();
+                store.setValue('step', StepMap[StepEnum.success]);
             }
-            setLoading(false);
-        } catch (error) {
+        } finally {
             setLoading(false);
         }
-    }, [elements, stripe, supportersName]);
+    }, [step, supportersName, userInfo?.id]);
 
     const RenderGift = useCallback(() => {
         return (
@@ -141,49 +117,21 @@ const Support: React.FC = () => {
     if (!userInfo) {
         return null;
     }
-    const { name, avatar, username } = userInfo;
+    const { name, avatar } = userInfo;
 
     return (
-        <>
+        <div className={ss.container}>
             <IonLoading isOpen={loading} message={t('Please wait')} />
-            <div className={ss.supportHead}>
-                <IonIcon
-                    className={ss.rightArrow}
-                    icon={arrowBackOutline}
-                    onClick={() => (isPay ? hide() : router.push(`/creator/${username}`))}
-                />
-                <div className={ss.userContainer}>
-                    <IonAvatar className={ss.avatar}>
-                        <img src={avatar} alt="" />
-                    </IonAvatar>
-                    <div className={ss.userName}>{`${t('Support')} ${name}`}</div>
-                    {isPay && (
-                        <div className={ss.payTips}>{`${t('You’ll be charged')} $${amount}`}</div>
-                    )}
-                </div>
-            </div>
+            <div className={ss.supportHead}>{`${t('Support')} ${name}`}</div>
             <div className={ss.supportContent}>
-                {isPay ? (
-                    <div className={ss.inputContainer}>
-                        <PhoneNumberInput
-                            value={phoneNumber}
-                            onChange={(phone: string) => {
-                                store.setValue('phoneNumber', phone);
-                            }}
-                        />
-                        <StripeCardElement
-                            onReady={() => {
-                                setDisable(false);
-                            }}
-                        />
-                    </div>
-                ) : (
+                {step === StepMap[StepEnum.support] && (
                     <>
                         <RenderGift />
                         <div className={ss.form}>
                             <div className={ss.or}>{t('OR')}</div>
                             <div className={ss.inputContainer}>
                                 <IonInput
+                                    mode="ios"
                                     className={ss.supprotInput}
                                     type="number"
                                     value={amount}
@@ -194,6 +142,7 @@ const Support: React.FC = () => {
                                     clearInput
                                 />
                                 <IonInput
+                                    mode="ios"
                                     className={ss.supprotInput}
                                     value={supportersName}
                                     placeholder={`${t('Enter your name')}...(Optional)`}
@@ -203,6 +152,7 @@ const Support: React.FC = () => {
                                     clearInput
                                 />
                                 <IonTextarea
+                                    mode="ios"
                                     className={ss.supprotInput}
                                     placeholder={`${t('Write something nice')}...(Optional)`}
                                     clearOnEdit={true}
@@ -216,52 +166,70 @@ const Support: React.FC = () => {
                         </div>
                     </>
                 )}
-                <IonButton
-                    disabled={disable}
-                    onClick={() => {
-                        if (isPay) {
-                            return handleSubmit();
-                        }
-                        setDisable(true);
-                        show();
-                    }}
-                    className={ss.btn}
-                >
-                    {`${t('Support')} $${amount}`}
-                </IonButton>
-            </div>
-            <Modal visible={result} animated={false}>
-                <IonContent>
-                    <div className={ss.resultHead}>
-                        <IonIcon icon={arrowBackOutline} onClick={hideResult} />
+                {step === StepMap[StepEnum.pay] && (
+                    <div className={ss.inputContainer}>
+                        <div className={ss.userContainer}>
+                            <IonAvatar className={ss.avatar}>
+                                <img src={avatar} alt="" />
+                            </IonAvatar>
+                            <div className={ss.userName}>{`${t('Support')} ${name}`}</div>
+                            <div className={ss.payTips}>{`${t(
+                                'You’ll be charged',
+                            )} $${amount}`}</div>
+                        </div>
+                        <PhoneNumberInput
+                            value={phoneNumber}
+                            onChange={(phone: string) => {
+                                store.setValue('phoneNumber', phone);
+                            }}
+                        />
+                        <StripeCardElement
+                            onReady={() => {
+                                setDisable(false);
+                            }}
+                        />
                     </div>
-                    <div className={ss.resultContent}>
-                        <div className={ss.resultDesc}>
-                            <span role="img" aria-label="" className={ss.resultIcon}>
-                                🙏🏻
-                            </span>
-                            <div className={ss.resultTitle}>
-                                {`${t('Thank you for supporting')} ${name}`}
-                            </div>
-                            <div className={ss.resultInfo}>
-                                {`${t('You have sent')} $${amount}${t('to')}${name}${t(
-                                    'successfully.And we will send you an email receipt shortly',
-                                )}`}
+                )}
+                {step === StepMap[StepEnum.success] && (
+                    <>
+                        <div className={ss.resultContent}>
+                            <div className={ss.resultDesc}>
+                                <span role="img" aria-label="" className={ss.resultIcon}>
+                                    🙏🏻
+                                </span>
+                                <div className={ss.resultTitle}>
+                                    {`${t('Thank you for supporting')} ${name}`}
+                                </div>
+                                <div className={ss.resultInfo}>
+                                    {`${t('You have sent')} $${amount}${t('to')}${name}${t(
+                                        'successfully.And we will send you an email receipt shortly',
+                                    )}`}
+                                </div>
+                                <div
+                                    className={ss.backBtn}
+                                    onClick={() => {
+                                        store.setValue('step', StepMap[StepEnum.support]);
+                                    }}
+                                >
+                                    OK!
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </IonContent>
-            </Modal>
-        </>
+                    </>
+                )}
+                {step !== StepMap[StepEnum.success] && (
+                    <IonButton
+                        mode="ios"
+                        disabled={disable}
+                        onClick={handleSubmit}
+                        className={ss.btn}
+                    >
+                        {`${t('Support')} $${amount}`}
+                    </IonButton>
+                )}
+            </div>
+        </div>
     );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return {
-        props: {
-            ...(await serverSideTranslations(getI18nLanguage(ctx), ['common'])),
-        },
-    };
 };
 
 export default observer(Support);

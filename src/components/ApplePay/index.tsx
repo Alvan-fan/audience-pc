@@ -1,3 +1,7 @@
+/**
+ * @file apple支付组件
+ */
+
 import React, { useEffect, useState } from 'react';
 
 import {

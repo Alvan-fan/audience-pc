@@ -1,3 +1,7 @@
+/**
+ * @file 重新封装的stripe支付组件
+ */
+
 import React from 'react';
 import cx from 'classnames';
 

@@ -16,6 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const store: GlobalStoreType = useStore().globalStore;
     const { globalToast } = store;
     const { visible, msg, color = 'danger', duration = 2000 } = globalToast;
+
     return (
         <IonApp>
             <IonHeader>
@@ -29,6 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </IonHeader>
             <IonContent className={ss.main}>{children}</IonContent>
             <IonToast
+                mode="ios"
                 isOpen={visible}
                 message={msg}
                 color={color}
