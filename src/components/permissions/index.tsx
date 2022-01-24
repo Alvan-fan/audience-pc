@@ -3,16 +3,16 @@
  */
 
 import React, { useCallback, useMemo, useReducer } from 'react';
+import { closeOutline } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useTranslation } from 'next-i18next';
 
 import Modal from '@/components/Modal';
 import PhoneNumberInput from '@/components/PhoneNumberInput';
-import Toolbar from '@/components/Toolbar';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { PermissionsTypeEnum, PermissionsTypeMap } from '@/store/globalStore';
-import { IonButton, IonInput } from '@ionic/react';
+import { IonButton, IonIcon, IonInput, IonToggle } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -101,133 +101,133 @@ const Permissions: React.FC<IProps> = (props) => {
     }, [phoneNumber, permissionsType, creatorName]);
 
     return (
-        <Modal
-            visible={visible}
-            header={
-                <Toolbar
-                    title={t(TransObj[permissionsType].title)}
-                    renderRight={
-                        <span
-                            className={ss.cancel}
+        <Modal className={ss.modal} visible={visible}>
+            <div className={ss.container}>
+                <div className={ss.loginBg} />
+                <div className={ss.content}>
+                    <div className={ss.closeBar}>
+                        <IonIcon
+                            icon={closeOutline}
                             onClick={() => {
                                 store.setGlobalState(
                                     'permissionsType',
                                     PermissionsTypeMap[PermissionsTypeEnum.none],
                                 );
                             }}
-                        >
-                            {t('Cancel')}
-                        </span>
-                    }
-                />
-            }
-        >
-            <div className={ss.container}>
-                {(permissionsType === PermissionsTypeMap[PermissionsTypeEnum.login] ||
-                    permissionsType === PermissionsTypeMap[PermissionsTypeEnum.signup]) && (
-                    <>
-                        <PhoneNumberInput
-                            onChange={(phone: string) => {
-                                dispatch({ type: 'phoneNumber', value: phone });
-                            }}
-                            value={phoneNumber}
+                            className={ss.icon}
                         />
-                        <IonInput
-                            value={password}
-                            className={ss.input}
-                            type="password"
-                            onIonChange={(e) => {
-                                dispatch({ type: 'password', value: e.detail.value || '' });
-                            }}
-                        />
-                        <IonButton
-                            className={ss.loginBtn}
-                            disabled={isLogin}
-                            onClick={handleSubmit}
-                        >
-                            {t(TransObj[permissionsType].title)}
-                        </IonButton>
-                        <div>
-                            <span>{t(TransObj[permissionsType].desc)}</span>
-                            <span
-                                className={ss.other}
-                                onClick={() => {
-                                    store.setGlobalState(
-                                        'permissionsType',
-                                        permissionsType ===
-                                            PermissionsTypeMap[PermissionsTypeEnum.login]
-                                            ? PermissionsTypeMap[PermissionsTypeEnum.signup]
-                                            : PermissionsTypeMap[PermissionsTypeEnum.login],
-                                    );
+                    </div>
+                    <div className={ss.title}>{t(TransObj[permissionsType].title)}</div>
+                    {(permissionsType === PermissionsTypeMap[PermissionsTypeEnum.login] ||
+                        permissionsType === PermissionsTypeMap[PermissionsTypeEnum.signup]) && (
+                        <div className={ss.formContainer}>
+                            <PhoneNumberInput
+                                defaultColor
+                                onChange={(phone: string) => {
+                                    dispatch({ type: 'phoneNumber', value: phone });
                                 }}
-                            >
-                                {t(TransObj[permissionsType].other)}
-                            </span>
-                        </div>
-                        {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.login] && (
-                            <div
-                                className={ss.resetPassWord}
-                                onClick={() => {
-                                    store.setGlobalState(
-                                        'permissionsType',
-                                        PermissionsTypeMap[PermissionsTypeEnum.resetpassword],
-                                    );
+                                value={phoneNumber}
+                            />
+                            <IonInput
+                                value={password}
+                                className={ss.input}
+                                type="password"
+                                placeholder={t('Enter Password')}
+                                onIonChange={(e) => {
+                                    dispatch({ type: 'password', value: e.detail.value || '' });
                                 }}
-                            >
-                                {t('I forgot my password')}
+                            />
+                            {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.login] && (
+                                <div className={ss.rember}>
+                                    <div className={ss.toggle}>
+                                        <IonToggle checked color="primary" className={ss.toggleBtn} />
+                                        <div>{t('Remember Me')}</div>
+                                    </div>
+                                    <div
+                                        className={ss.resetPassWord}
+                                        onClick={() => {
+                                            store.setGlobalState(
+                                                'permissionsType',
+                                                PermissionsTypeMap[
+                                                    PermissionsTypeEnum.resetpassword
+                                                ],
+                                            );
+                                        }}
+                                    >
+                                        {t('I forgot my password')}
+                                    </div>
+                                </div>
+                            )}
+                            <IonButton disabled={isLogin} onClick={handleSubmit}>
+                                {t(TransObj[permissionsType].title)}
+                            </IonButton>
+                            <div>
+                                <span>{t(TransObj[permissionsType].desc)}</span>
+                                <span
+                                    className={ss.other}
+                                    onClick={() => {
+                                        store.setGlobalState(
+                                            'permissionsType',
+                                            permissionsType ===
+                                                PermissionsTypeMap[PermissionsTypeEnum.login]
+                                                ? PermissionsTypeMap[PermissionsTypeEnum.signup]
+                                                : PermissionsTypeMap[PermissionsTypeEnum.login],
+                                        );
+                                    }}
+                                >
+                                    {t(TransObj[permissionsType].other)}
+                                </span>
                             </div>
-                        )}
-                    </>
-                )}
-                {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.resetpassword] && (
-                    <>
-                        <PhoneNumberInput
-                            onChange={(phone: string) => {
-                                dispatch({ type: 'phoneNumber', value: phone });
-                            }}
-                            value={phoneNumber}
-                        />
-                        <IonButton className={ss.loginBtn} onClick={handleSubmit}>
-                            {t(TransObj[permissionsType].title)}
-                        </IonButton>
-                        <div>
-                            <span>{t(TransObj[permissionsType].left)}</span>
-                            <span
-                                className={ss.other}
-                                onClick={() => {
-                                    store.setGlobalState(
-                                        'permissionsType',
-                                        PermissionsTypeMap[PermissionsTypeEnum.login],
-                                    );
+                        </div>
+                    )}
+                    {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.resetpassword] && (
+                        <div className={ss.formContainer}>
+                            <PhoneNumberInput
+                                defaultColor
+                                onChange={(phone: string) => {
+                                    dispatch({ type: 'phoneNumber', value: phone });
                                 }}
-                            >
+                                value={phoneNumber}
+                            />
+                            <IonButton onClick={handleSubmit}>
+                                {t(TransObj[permissionsType].title)}
+                            </IonButton>
+                            <div>
+                                <span>{t(TransObj[permissionsType].left)}</span>
+                                <span
+                                    className={ss.other}
+                                    onClick={() => {
+                                        store.setGlobalState(
+                                            'permissionsType',
+                                            PermissionsTypeMap[PermissionsTypeEnum.login],
+                                        );
+                                    }}
+                                >
+                                    {t(TransObj[permissionsType].other)}
+                                </span>
+                                <span>{t(TransObj[permissionsType].right)}</span>
+                            </div>
+                        </div>
+                    )}
+                    {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.msgLogin] && (
+                        <div className={ss.formContainer}>
+                            <div className={ss.msgLoginTitle}>{t('Enter Phone Number')}</div>
+                            <div className={ss.msgLoginDesc}>
+                                {t('We will send you a login link via SMS')}
+                            </div>
+                            <PhoneNumberInput
+                                defaultColor
+                                onChange={(phone: string) => {
+                                    dispatch({ type: 'phoneNumber', value: phone });
+                                }}
+                                value={phoneNumber}
+                            />
+                            <IonButton disabled={isLogin} onClick={handleSubmit}>
                                 {t(TransObj[permissionsType].other)}
-                            </span>
-                            <span>{t(TransObj[permissionsType].right)}</span>
+                            </IonButton>
                         </div>
-                    </>
-                )}
-                {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.msgLogin] && (
-                    <>
-                        <div className={ss.msgLoginTitle}>{t('Enter Phone Number')}</div>
-                        <div className={ss.msgLoginDesc}>
-                            {t('We will send you a login link via SMS')}
-                        </div>
-                        <PhoneNumberInput
-                            onChange={(phone: string) => {
-                                dispatch({ type: 'phoneNumber', value: phone });
-                            }}
-                            value={phoneNumber}
-                        />
-                        <IonButton
-                            disabled={isLogin}
-                            className={ss.loginBtn}
-                            onClick={handleSubmit}
-                        >
-                            {t(TransObj[permissionsType].other)}
-                        </IonButton>
-                    </>
-                )}
+                    )}
+                </div>
             </div>
         </Modal>
     );

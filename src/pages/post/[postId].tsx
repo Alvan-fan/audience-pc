@@ -8,7 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import MediaPlayer from '@/components/MediaPlayer';
 import Modal from '@/components/Modal';
-import Permissions from '@/components/permissions';
+import Permissions from '@/components/Permissions';
 import Skeleton from '@/components/Skeleton';
 import Toolbar from '@/components/Toolbar';
 import { useModalVisible } from '@/hooks';

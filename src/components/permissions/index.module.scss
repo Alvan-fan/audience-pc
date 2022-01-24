@@ -1,18 +1,59 @@
+.modal {
+    --min-width: 9rem !important;
+}
 .container {
+    display: flex;
+}
+.loginBg {
+    width: 4rem;
+    height: 6rem;
+    background-image: url('/img/loginBg.png');
+}
+.content {
+    position: relative;
+    width: 5rem;
+    padding: 0.4rem 0.48rem 0;
+}
+.closeBar {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    text-align: right;
+    cursor: pointer;
+    .icon {
+        font-size: 0.3rem;
+    }
+}
+.title {
+    margin: 0.3rem 0 0.48rem;
+    color: #000;
+    font-weight: bold;
+    font-size: 36px;
+}
+.formContainer {
     display: grid;
     grid-gap: 0.18rem;
-    padding: 0.16rem 0.16rem;
     .input {
         padding-left: 0.1rem !important;
         border: 1px solid #cccccc;
         border-radius: 0.04rem;
     }
 }
-.cancel {
-    color: #ff0050;
+.rember {
+    display: flex;
+    justify-content: space-between;
 }
-.loginBtn {
-    --border-radius: 10px;
+.toggle {
+    display: flex;
+    align-items: center;
+    color: #120d26;
+    line-height: 0.23rem;
+}
+.toggleBtn {
+    width: 0.33rem;
+    height: 0.2rem;
+    margin-right: 0.08rem;
+    --handle-width: 0.15rem;
 }
 .other {
     margin: 0 0.05rem;
@@ -22,7 +63,7 @@
 }
 .resetPassWord {
     color: #ff0050;
-    text-align: center;
+    cursor: pointer;
 }
 .msgLoginTitle {
     color: #212121;

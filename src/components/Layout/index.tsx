@@ -2,13 +2,12 @@
  * @file 全局layout
  */
 import React from 'react';
-import logo from '/public/img/logo.svg';
 import { observer } from 'mobx-react';
-import Image from 'next/image';
 
+import Header from '@/components/Header';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
-import { IonApp, IonContent, IonHeader, IonToast } from '@ionic/react';
+import { IonApp, IonContent, IonToast } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -19,15 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <IonApp>
-            <IonHeader>
-                <div className={ss.header}>
-                    <div className={ss.headLeft}>
-                        <Image src={logo} />
-                        <b>House Studio</b>
-                    </div>
-                    <div className={ss.headRight}>Create on House Studio</div>
-                </div>
-            </IonHeader>
+            <Header />
             <IonContent className={ss.main}>{children}</IonContent>
             <IonToast
                 mode="ios"

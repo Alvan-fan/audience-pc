@@ -9,12 +9,12 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import Gallery from '@/components/gallery';
-import Links from '@/components/links';
+import Gallery from '@/components/Gallery';
+import Links from '@/components/Links';
 import MemberShipTiers from '@/components/MemberShipTiers';
-import Permissions from '@/components/permissions';
+import Permissions from '@/components/Permissions';
 import QuickSubCard from '@/components/QuickSubCard';
-import Subscribe from '@/components/subscribe';
+import Subscribe from '@/components/Subscribe';
 import Support from '@/components/Support';
 import Tabs from '@/components/Tabs';
 import { addStore, useStore } from '@/store';

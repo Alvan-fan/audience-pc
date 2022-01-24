@@ -16,10 +16,11 @@ interface IProps {
     value: string;
     inputClass?: string;
     buttonClass?: string;
+    defaultColor?: boolean;
     onChange: (value: string) => void;
 }
 const PhoneNumberInput: React.FC<IProps> = (props) => {
-    const { value, inputClass, buttonClass, onChange } = props;
+    const { value, defaultColor = false, inputClass, buttonClass, onChange } = props;
     const { t } = useTranslation();
 
     const handleFilterNumber = useCallback(
@@ -36,8 +37,12 @@ const PhoneNumberInput: React.FC<IProps> = (props) => {
     return (
         <div className={ss.container}>
             <PhoneInput
-                inputClass={cx(ss.input, inputClass)}
-                buttonClass={cx(ss.inputBtn, buttonClass)}
+                inputClass={cx(ss.input, inputClass, {
+                    [ss.defaultInput]: defaultColor,
+                })}
+                buttonClass={cx(ss.inputBtn, buttonClass, {
+                    [ss.defaultBtn]: defaultColor,
+                })}
                 country={getCountryCode()}
                 placeholder={t('Enter Phone Number')}
                 value={value}

@@ -26,6 +26,7 @@ const QuickSubCard: React.FC = () => {
     const toggleModal = useCallback(() => {
         if (!phoneNumber) {
             return present({
+                mode: 'ios',
                 color: 'danger',
                 message: t('please check that all fields are filled out correctly'),
                 duration: 1000,

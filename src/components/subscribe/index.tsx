@@ -76,6 +76,7 @@ const Subscribe: React.FC = () => {
             }
             if (!stripe || !elements) {
                 return present({
+                    mode: 'ios',
                     message: 'stripe has not been initialized.',
                     duration: 1000,
                     color: 'danger',
@@ -89,6 +90,7 @@ const Subscribe: React.FC = () => {
                 });
                 if (stripeResult.error) {
                     return present({
+                        mode: 'ios',
                         message: stripeResult.error.message,
                         duration: 1000,
                         color: 'danger',

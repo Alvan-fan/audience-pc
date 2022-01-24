@@ -59,6 +59,7 @@ const Support: React.FC = () => {
         }
         if (!store.phoneNumber) {
             return present({
+                mode: 'ios',
                 message: t('please check that all fields are filled out correctly'),
                 duration: 1000,
                 color: 'danger',
