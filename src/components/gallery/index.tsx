@@ -3,6 +3,7 @@
  */
 import React, { useCallback, useEffect } from 'react';
 import cx from 'classnames';
+import { chatboxOutline, heartOutline } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 
@@ -13,7 +14,7 @@ import { addStore, useStore } from '@/store';
 import type { GalleryStoreType, IPostListType } from '@/store/galleryStore';
 import galleryStore from '@/store/galleryStore';
 import type { GlobalStoreType } from '@/store/globalStore';
-import { IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/react';
+import { IonIcon, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/react';
 
 import ss from './index.module.scss';
 
@@ -43,6 +44,20 @@ const Gallery: React.FC = () => {
             return;
         }
         router.push(`/post/${play_id}`);
+    }, []);
+
+    const RenderMask = useCallback(({ data }: { data: IPostListType }) => {
+        const { comment_number = 0, vote_number = 0 } = data;
+        return (
+            <>
+                <div className={ss.mask}>
+                    <IonIcon icon={heartOutline} className={ss.icon} />
+                    {vote_number}
+                    <IonIcon icon={chatboxOutline} className={ss.icon} />
+                    {comment_number}
+                </div>
+            </>
+        );
     }, []);
 
     if (loading) {
@@ -81,6 +96,7 @@ const Gallery: React.FC = () => {
                                     {item.play_visibility === 0 && (
                                         <div className={ss.lockBtn}>Unlock Image</div>
                                     )}
+                                    <RenderMask data={item} />
                                 </div>
                                 {item.play_name && (
                                     <div className={ss.postTitle}>{item.play_name}</div>
@@ -108,6 +124,7 @@ const Gallery: React.FC = () => {
                                 {item.play_visibility === 0 && (
                                     <div className={ss.lockBtn}>Unlock Video</div>
                                 )}
+                                <RenderMask data={item} />
                             </div>
                             {item.play_name && <div className={ss.postTitle}>{item.play_name}</div>}
                             {item.play_description && (

@@ -70,21 +70,27 @@ export default function PostStore (): PostStoreType {
         },
         async updataComment (value: string, id: string) {
             this.loading.updateCommentBtn = true;
-            await updataComment({ play_id: id, comment_body: value });
-            const { avatar = '', name = '' } = JSON.parse(localStorage.getItem('userInfo') || '');
-            runInAction(() => {
-                //@ts-ignore
-                this.commentData?.push({
-                    content: value,
-                    user_avatar: avatar,
-                    date: getLocalDate(),
-                    user_name: name,
-                    id: Math.random()
+            try {
+                await updataComment({ play_id: id, comment_body: value });
+                const { avatar = '', name = '' } = JSON.parse(
+                    localStorage.getItem('userInfo') || '',
+                );
+                runInAction(() => {
+                    //@ts-ignore
+                    this.commentData?.push({
+                        content: value,
+                        user_avatar: avatar,
+                        date: getLocalDate(),
+                        user_name: name,
+                        id: Math.random(),
+                    });
+                    this.commentText = '';
+                    this.postDetail!.comment_number = this.commentData!.length || 0;
+                    this.loading.updateCommentBtn = false;
                 });
-                this.commentText = '';
-                this.postDetail!.comment_number = this.commentData!.length || 0;
+            } finally {
                 this.loading.updateCommentBtn = false;
-            });
+            }
         },
         async getPostDetail (id: string) {
             this.loading.getPostData = true;

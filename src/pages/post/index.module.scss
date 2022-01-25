@@ -1,140 +1,129 @@
-.postSkeleton {
+@import '/public/style/mixin.scss';
+
+.container {
     display: flex;
-    margin: 0.1rem;
-    padding: 0.05rem;
-}
-.commentSkeleton {
-    margin-top: 0.18rem;
-}
-.content {
-    padding-bottom: 1rem;
-}
-.rightArrow {
-    font-size: 0.21rem;
-}
-.postAvatar {
-    display: flex;
-    align-items: center;
-    padding: 0.15rem;
-}
-.avatar {
-    width: 0.35rem;
-    height: 0.35rem;
-    margin-right: 0.05rem;
-    border-radius: 50%;
-}
-.avatarContent {
-    font-weight: 400;
-    .name {
-        font-weight: 600;
-        font-size: 0.12rem;
-        line-height: 0.25rem;
-    }
-    .date {
-        color: #828796;
-        font-size: 0.12rem;
-        line-height: 0.18rem;
-    }
-}
-.opreatContainer {
-    padding: 0.24rem 0.16rem 0;
-    color: #242424;
-    font-weight: normal;
-    .title {
-        margin-bottom: 0.14rem;
-        font-weight: bold;
-        font-size: 0.24rem;
-        line-height: 0.18rem;
-    }
-    .desc {
-        font-size: 0.14rem;
-        line-height: 0.18rem;
-    }
-}
-.operationBar {
-    display: flex;
-    align-items: center;
-    margin-top: 0.25rem;
-}
-.comment {
-    display: flex;
-    align-items: center;
-    font-size: 0.12rem;
-    line-height: 0.2rem;
-    .icon {
-        font-size: 0.18rem;
-    }
-    .number {
-        margin-right: 0.04rem;
-        margin-left: 0.09rem;
-        font-weight: bold;
-    }
-    .text {
-        margin-right: 0.2rem;
-    }
+    height: calc(100vh - 0.6rem);
+    overflow: hidden;
+    background-color: #fff;
 }
 .noData {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 95%;
+}
+.preview {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+}
+.opreatContainer {
+    display: flex;
+    flex-direction: column;
+    width: 4rem;
+}
+.user {
+    display: flex;
+    padding: 0.5rem 0.24rem;
+    border-bottom: 1px solid #d1d1d1;
+}
+.avatar {
+    flex-shrink: 0;
+    width: 0.28rem;
+    height: 0.28rem;
+    margin-right: 0.14rem;
+}
+.info {
+    display: flex;
+    margin-bottom: 0.12rem;
+    line-height: 0.16rem;
+    .name {
+        margin-right: 0.08rem;
+        color: #000;
+        font-weight: bold;
+    }
+    .date {
+        color: #616161;
+        font-size: 0.12rem;
+    }
+}
+.title {
+    margin-bottom: 0.04rem;
+    color: #242424;
+    font-weight: bold;
+    font-size: 0.18rem;
+    line-height: 0.28rem;
+}
+.desc {
+    color: #424242;
+    font-size: 0.18rem;
+    line-height: 0.2rem;
+    @include ellipsis-lines(2);
 }
 .commentContainer {
-    padding: 0 0.2rem;
+    flex: 1;
+    overflow-y: scroll;
 }
-.commentContent {
+.commentTitle {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    padding: 0.24rem;
+    color: #000;
+    font-weight: bold;
+    font-size: 0.2rem;
+    line-height: 0.16rem;
+    background-color: #fff;
+}
+.commentItem {
     display: flex;
-    margin: 0.2rem 0;
-    line-height: 0.17rem;
-    .avatar {
-        width: 0.32rem;
-        height: 0.32rem;
-    }
-    .user {
-        span {
-            color: #252423;
-            font-weight: 600;
-            font-size: 0.12rem;
-        }
-        .date {
-            margin-left: 0.06rem;
-            color: #616161;
-            font-weight: 400;
-        }
-    }
-    .text {
-        margin-top: 0.03rem;
-        color: #252423;
-        font-size: 0.14rem;
-    }
+    padding: 0 0.24rem 0.24rem;
 }
-.commentInput {
-    position: relative;
+.itemInfo {
+    margin-bottom: 0.18rem;
+}
+.commentDesc {
+    color: #424242;
+    font-size: 0.18rem;
+    line-height: 0.2rem;
+    word-wrap: break-all;
+}
+.operationBar {
+    padding: 0.25rem 0;
+    box-shadow: 0px -12px 10px rgba(30, 83, 133, 0.03);
+}
+.bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 0.76rem;
-    margin-bottom: 0.5rem;
-    padding: 0 0.16rem;
-    border: 1px solid #f2f2f2;
-    border-bottom: none;
-    box-shadow: 0px -12px 10px rgb(30 83 133 / 3%);
-    .input {
-        width: 100%;
-        height: 0.44rem;
-        padding: 0 0.5rem 0 0.2rem !important;
-        border: 1px solid #dde8e8;
-        border-radius: 35px;
+    margin-bottom: 0.3rem;
+    color: #242424;
+    font-size: 0.16rem;
+    line-height: 0.2rem;
+    .icon {
+        margin: 0 0.08rem 0 0.25rem;
+        font-size: 0.22rem;
+        cursor: pointer;
     }
-    .postbtn {
+}
+.inputContainer {
+    position: relative;
+    padding: 0 0.25rem;
+    .input {
+        height: 0.44rem;
+        border: 1px solid #f2f2f2;
+        border-radius: 35px;
+        --padding-start: 0.16rem;
+        --padding-end: 0.9rem;
+    }
+    .postBtn {
         position: absolute;
-        right: 0.36rem;
-        display: flex;
-        align-items: center;
-        color: #979797;
-        font-weight: 400;
-        font-size: 0.14rem;
-        line-height: 0.44rem;
-        background: none;
+        top: 0.12rem;
+        right: 0.5rem;
+        z-index: 2;
+    }
+    .btn {
+        cursor: pointer;
     }
 }

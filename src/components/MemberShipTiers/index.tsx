@@ -12,7 +12,6 @@ import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType, TierListType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
-// import { logEvent } from '@/utils/analytics';
 import { IonButton, IonIcon } from '@ionic/react';
 
 import ss from './index.module.scss';
@@ -25,7 +24,7 @@ const MemberShipTiers: React.FC = () => {
     const [allTier, s, h, u, toggle] = useModalVisible();
 
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && !tierList) {
             const { id } = userInfo;
             store.getTiers(id);
         }
