@@ -63,8 +63,9 @@ const MemberShipTiers: React.FC = () => {
                             <div className={ss.name}>{tier_name}</div>
                             <div className={ss.price}>{`$${tier_price}/Month`}</div>
                             <div className={ss.desc}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mattis urna
-                                non turpis magna eu duis.
+                                {item.tier_perks.map((descText: string) => (
+                                    <div>{descText}</div>
+                                ))}
                             </div>
                             <IonButton
                                 mode="ios"
