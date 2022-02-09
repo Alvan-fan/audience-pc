@@ -1,6 +1,6 @@
 import { runInAction } from 'mobx';
 
-import { getComment, getPostDetail, updataComment } from '@/services/postDetail';
+import { getComment, getPostDetail, updataComment, updataLike } from '@/services/postDetail';
 import { commentTransForm, postTransForm } from '@/transforms/postTransForm';
 import { getLocalDate } from '@/utils';
 
@@ -52,6 +52,7 @@ export interface PostStoreType {
     getComment: (id: string) => void;
     updataComment: (value: string, id: string) => void;
     setPostState: (type: string, value: boolean | string) => void;
+    updataLike: (id: string) => void;
 }
 
 export default function PostStore (): PostStoreType {
@@ -67,6 +68,18 @@ export default function PostStore (): PostStoreType {
         setPostState (type: string, value: boolean | string) {
             //@ts-ignore
             this[type] = value;
+        },
+        async updataLike (id: string) {
+            if (!this.postDetail) {
+                return;
+            }
+            this.postDetail.like_status = Math.abs(this.postDetail.like_status - 1);
+            if (Math.abs(this.postDetail.like_status - 1) === 1) {
+                this.postDetail.like_num--;
+            } else {
+                this.postDetail.like_num++;
+            }
+            await updataLike({ play_id: id });
         },
         async updataComment (value: string, id: string) {
             this.loading.updateCommentBtn = true;

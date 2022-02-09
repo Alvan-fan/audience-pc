@@ -14,3 +14,8 @@ export const getComment = (params: { play_id: string }) => {
 export const updataComment = (params: { play_id: string; comment_body: string }) => {
     return request.post('/post_comment', params);
 };
+
+// 点赞
+export const updataLike = (params: { play_id: string }) => {
+    return request.post('/like_post', params);
+};

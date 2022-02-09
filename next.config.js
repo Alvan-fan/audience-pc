@@ -9,7 +9,7 @@ if (NODE_ENV == 'production') {
     STRIPE_KEY =
         'pk_live_51I9JshLXpKNZDmCJyUkpjFCIHdWrHyajjoM9O9lEBxHjyadyfFkPVVQv8hPK6g3BeSVGFXq3ygGWou5c5UbXAGRX00V2Uah9sw';
 } else {
-    BASE_URL = 'http://house-api-pre-1.eba-8jjbciyi.us-west-2.elasticbeanstalk.com';
+    BASE_URL = 'https://pre.housechan.com';
     STRIPE_KEY =
         'pk_test_51I9JshLXpKNZDmCJJEEFwKofstROi9JYdxTPSv3xaNnnzSTfrCcOo9Jv06EynaXpUYx0t5zPuV0iglrxqqFSg0HN00T3IXPCDV';
 }

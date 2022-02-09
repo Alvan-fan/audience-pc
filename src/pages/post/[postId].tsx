@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import postBtn from '/public/img/postBtn.svg';
 import cx from 'classnames';
-import { chatboxOutline, heartOutline, shareOutline } from 'ionicons/icons';
+import { chatboxOutline, heart, heartOutline } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
@@ -59,6 +59,16 @@ const Post: React.FC = () => {
             );
         }
     }, []);
+
+    const handleLike = useCallback(() => {
+        if (!isLogin()) {
+            return globalStore.setGlobalState(
+                'permissionsType',
+                PermissionsTypeMap[PermissionsTypeEnum.msgLogin],
+            );
+        }
+        store.updataLike(postId as string);
+    }, [postId]);
 
     const updataComment = useCallback(async () => {
         if (commentText === '') {
@@ -149,7 +159,7 @@ const Post: React.FC = () => {
         return <IonLoading isOpen={true} message={t('Please wait')} />;
     }
 
-    const { creator_username, play_url, vote_number, comment_number } = postDetail;
+    const { creator_username, play_url, like_num, like_status, comment_number } = postDetail;
 
     return (
         <>
@@ -170,11 +180,15 @@ const Post: React.FC = () => {
                     </div>
                     <div className={ss.operationBar}>
                         <div className={ss.bar}>
-                            <IonIcon icon={heartOutline} className={ss.icon} />
-                            {vote_number}
+                            <IonIcon
+                                icon={like_status === 1 ? heart : heartOutline}
+                                className={ss.icon}
+                                onClick={handleLike}
+                            />
+                            {like_num}
                             <IonIcon icon={chatboxOutline} className={ss.icon} onClick={toggle} />
                             {comment_number}
-                            <IonIcon icon={shareOutline} className={ss.icon} />
+                            {/* <IonIcon icon={shareOutline} className={ss.icon} /> */}
                         </div>
                         <div className={ss.inputContainer}>
                             <IonInput

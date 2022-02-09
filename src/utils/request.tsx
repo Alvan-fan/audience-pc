@@ -8,6 +8,7 @@ import axios from 'axios';
 import { refreshToken } from '@/services/global';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
+import { PermissionsTypeEnum, PermissionsTypeMap } from '@/store/globalStore';
 import { cookie, getToken, isExpired } from '@/utils';
 import { BASE_URL } from '@/utils/config';
 interface ServiceResponse {
@@ -66,6 +67,13 @@ const serviceErrorHandler = (
 
     if (code === 0) {
         return response;
+    }
+
+    // 暂时使用msg重定向到登陆页
+    if (code === 1 && msg === 'Already subscribed') {
+        store.setGlobalState('globalToast', { visible: true, msg });
+        store.setGlobalState('permissionsType', PermissionsTypeMap[PermissionsTypeEnum.msgLogin]);
+        return Promise.reject(msg);
     }
 
     if (handler) {
