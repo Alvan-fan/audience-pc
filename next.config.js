@@ -1,5 +1,5 @@
 const path = require('path');
-const { i18n } = require('./next-i18next.config');
+// const { i18n } = require('./next-i18next.config');
 
 //配置环境变量
 const NODE_ENV = process.env.NODE_ENV;
@@ -16,7 +16,7 @@ if (NODE_ENV == 'production') {
 
 /** @type {import('next').NextConfig} */
 module.exports = {
-    i18n,
+    // i18n,
     env: {
         NEXT_PUBLIC_BASE_URL: BASE_URL,
         NEXT_PUBLIC_STRIPE_KEY: STRIPE_KEY,
@@ -29,7 +29,7 @@ module.exports = {
         return [
             {
                 source: '/',
-                destination: '/creator',
+                destination: '/creator/HouseStudio',
                 permanent: true,
             },
         ];
