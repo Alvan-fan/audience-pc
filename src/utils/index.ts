@@ -22,6 +22,14 @@ export const initUserState = (accessToken: string, refreshToken: string, expired
     serverToken.EXPIRED_TIME = expiredTime;
 };
 
+// 获取用户登陆后的信息
+export const getUserInfo = () => {
+    if (global.localStorage) {
+        const info = localStorage.getItem('userInfo') || '{}';
+        return JSON.parse(info);
+    }
+};
+
 // 判断token是否过期
 export const isExpired = () => {
     if (cookie.get('EXPIRED_TIME') && serverToken.EXPIRED_TIME) {
@@ -39,7 +47,7 @@ export const isExpired = () => {
 
 // 判断是否登陆
 export const isLogin = () => {
-    return !!(cookie.get('ACCESS_TOKEN') && !isExpired());
+    return !!(cookie.get('ACCESS_TOKEN') && !isExpired() && Object.keys(getUserInfo()).length !== 0);
 };
 
 // 全局导出获取token方法

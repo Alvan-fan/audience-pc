@@ -21,7 +21,7 @@ const QuickSubCard: React.FC = () => {
     const globalStore: GlobalStoreType = useStore().globalStore;
     const store: SubscribeStoreType = useStore().subscribeStore;
     const { phoneNumber } = store;
-    const { subscribeVisible } = globalStore;
+    const { subscribeVisible, userInfo } = globalStore;
 
     const toggleModal = useCallback(() => {
         if (!phoneNumber) {
@@ -36,12 +36,18 @@ const QuickSubCard: React.FC = () => {
         globalStore.setGlobalState('subscribeVisible', !subscribeVisible);
     }, [phoneNumber, subscribeVisible]);
 
+    if (!userInfo) {
+        return null;
+    }
+
+    const { name } = userInfo;
+
     return (
         <div className={ss.container}>
             <div className={ss.title}>Subscribe My HouseStudio</div>
             <div className={ss.desc}>
-                Subscribe to Nicole via House to receive exclusive posts right in your inbox, and
-                build a personal relationship
+                {`Subscribe to ${name} House to receive exclusive posts right in your inbox, and
+                build a personal relationship`}
             </div>
             <div className={ss.operatContainer}>
                 <div className={ss.inputContainer}>

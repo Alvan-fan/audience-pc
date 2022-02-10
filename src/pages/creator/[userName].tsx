@@ -47,10 +47,10 @@ const Creator: React.FC = () => {
                 key: '1',
                 label: 'All Posts',
             },
-            {
-                key: '2',
-                label: 'Exclusive Posts',
-            },
+            // {
+            //     key: '2',
+            //     label: 'Exclusive Posts',
+            // },
         ];
     }, []);
 

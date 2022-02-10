@@ -1,3 +1,4 @@
+@import '/public/style/mixin.scss';
 .header {
     display: flex;
     align-items: center;
@@ -17,9 +18,54 @@
 .headRight {
     width: 1.13rem;
     color: #242424;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #cccccc;
     border-radius: 49px;
     --background: #fff !important;
     --background-hover: #fafafa;
     --background-activated: #fff;
+}
+.loginContainer {
+    position: relative;
+    &:hover {
+        .popover {
+            display: block;
+        }
+    }
+}
+.userInfo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.popover {
+    position: absolute;
+    top: 0.35rem;
+    right: -0.2rem;
+    z-index: 2;
+    display: none;
+    width: 2rem;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #ccc;
+}
+.popoverItem {
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+    padding: 0.15rem;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(236, 235, 235);
+    }
+}
+.avatar {
+    width: 0.36rem;
+    height: 0.36rem;
+    margin-right: 0.1rem;
+}
+.name {
+    width: 1rem;
+    font-weight: bold;
+    @include ellipsis-lines(1);
 }

@@ -2,7 +2,7 @@ import { runInAction } from 'mobx';
 
 import { getComment, getPostDetail, updataComment, updataLike } from '@/services/postDetail';
 import { commentTransForm, postTransForm } from '@/transforms/postTransForm';
-import { getLocalDate } from '@/utils';
+import { getLocalDate, getUserInfo } from '@/utils';
 
 export interface IPostDetailType {
     comment_number: number;
@@ -85,9 +85,7 @@ export default function PostStore (): PostStoreType {
             this.loading.updateCommentBtn = true;
             try {
                 await updataComment({ play_id: id, comment_body: value });
-                const { avatar = '', name = '' } = JSON.parse(
-                    localStorage.getItem('userInfo') || '',
-                );
+                const { avatar = '', name = '' } = getUserInfo();
                 runInAction(() => {
                     //@ts-ignore
                     this.commentData?.push({

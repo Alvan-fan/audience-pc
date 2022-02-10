@@ -64,7 +64,7 @@ const MemberShipTiers: React.FC = () => {
                             <div className={ss.price}>{`$${tier_price}/Month`}</div>
                             <div className={ss.desc}>
                                 {item.tier_perks.map((descText: string) => (
-                                    <div>{descText}</div>
+                                    <div key={descText}>{descText}</div>
                                 ))}
                             </div>
                             <IonButton

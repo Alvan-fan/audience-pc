@@ -2,12 +2,12 @@
  * @file 重新封装手机号输入组件
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 
-import { getCountryCode } from '@/utils';
+import { getCountryCode, getUserInfo } from '@/utils';
 
 import 'react-phone-input-2/lib/style.css';
 import ss from './index.module.scss';
@@ -20,8 +20,15 @@ interface IProps {
     onChange: (value: string) => void;
 }
 const PhoneNumberInput: React.FC<IProps> = (props) => {
+    const { phone_number = '' } = getUserInfo();
     const { value, defaultColor = false, inputClass, buttonClass, onChange } = props;
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (phone_number) {
+            onChange(phone_number);
+        }
+    }, [phone_number]);
 
     const handleFilterNumber = useCallback(
         (phone: string, data: any) => {

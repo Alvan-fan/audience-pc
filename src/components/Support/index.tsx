@@ -228,6 +228,16 @@ const Support: React.FC = () => {
                         {`${t('Support')} $${amount}`}
                     </IonButton>
                 )}
+                {step === StepMap[StepEnum.pay] && (
+                    <div
+                        className={ss.back}
+                        onClick={() => {
+                            store.setValue('step', StepMap[StepEnum.support]);
+                        }}
+                    >
+                        {t('Back')}
+                    </div>
+                )}
             </div>
         </div>
     );
