@@ -1,3 +1,7 @@
+/**
+ * @file header组件
+ */
+
 import React, { useCallback, useMemo, useState } from 'react';
 import logo from '/public/img/logo.svg';
 import { observer } from 'mobx-react';
@@ -7,6 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { PermissionsTypeEnum, PermissionsTypeMap } from '@/store/globalStore';
+import type { SubscribeStoreType } from '@/store/subscribeStore';
 import { cookie, getUserInfo, isLogin } from '@/utils';
 import { IonAvatar, IonButton, IonHeader } from '@ionic/react';
 
@@ -15,22 +20,26 @@ import ss from './index.module.scss';
 const Header: React.FC = () => {
     const { t } = useTranslation();
     const store: GlobalStoreType = useStore().globalStore;
+    const subscribeStore: SubscribeStoreType = useStore().subscribeStore;
     const [loginOut, setLoginOut] = useState<boolean>(false);
+
+    const handleLoginOut = useCallback(() => {
+        cookie.remove('ACCESS_TOKEN');
+        cookie.remove('REFRESH_TOKEN');
+        cookie.remove('EXPIRED_TIME');
+        localStorage.removeItem('userInfo');
+        setLoginOut(true);
+        subscribeStore.setValue('phoneNumber', '');
+    }, [subscribeStore]);
 
     const menus = useMemo(
         () => [
             {
                 title: 'Logout',
-                fn: () => {
-                    cookie.remove('ACCESS_TOKEN');
-                    cookie.remove('REFRESH_TOKEN');
-                    cookie.remove('EXPIRED_TIME');
-                    localStorage.removeItem('userInfo');
-                    setLoginOut(true);
-                },
+                fn: handleLoginOut,
             },
         ],
-        [],
+        [handleLoginOut],
     );
 
     const handleLogin = useCallback(() => {
@@ -65,7 +74,7 @@ const Header: React.FC = () => {
                 {t('Login')}
             </IonButton>
         );
-    }, [loginOut]);
+    }, [handleLogin, loginOut, menus]);
 
     return (
         <div className={ss.container}>

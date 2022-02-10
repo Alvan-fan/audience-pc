@@ -8,6 +8,7 @@ import { transformTierList } from '@/transforms/subscribeForm';
 
 export interface TierListType {
     create_date: string;
+    is_subscribed: boolean;
     creator_id: number;
     price_id: string;
     product_id: string;

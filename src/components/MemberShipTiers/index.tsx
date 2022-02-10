@@ -57,7 +57,10 @@ const MemberShipTiers: React.FC = () => {
         return (
             <>
                 {list.map((item: TierListType) => {
-                    const { tier_name, tier_price } = item;
+                    const { tier_name, tier_price, is_subscribed } = item;
+                    if (is_subscribed) {
+                        return null;
+                    }
                     return (
                         <div className={ss.tierItem} key={item.tier_id}>
                             <div className={ss.name}>{tier_name}</div>

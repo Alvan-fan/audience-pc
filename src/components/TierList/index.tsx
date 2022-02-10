@@ -106,34 +106,42 @@ const TierList: React.FC = () => {
                 }}
                 className={ss.sliders}
             >
-                {tierList.map((item: TierListType) => (
-                    <IonSlide key={item.tier_id} className={ss.tierItem}>
-                        <div className={ss.tierName}>{item.tier_name}</div>
-                        <div className={ss.tierPrice}>{`$${item.tier_price}/Month`}</div>
-                        <div className={ss.introduce}>
-                            You will also receive a card from me and some goodies in the post, and
-                            access to my research OneNote - the place I make all of my research
-                            notes on ancient
-                        </div>
-                        <ul className={ss.tierPerks}>
-                            {item.tier_perks.map((perk: string) => {
-                                return (
-                                    <li className={ss.tiers} key={perk}>
-                                        {perk}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                        <IonButton
-                            className={cx(ss.tierBtn, {
-                                [ss.freeBtn]: item.tier_price === '0.00',
-                            })}
-                            onClick={() => handleChooseTier(item)}
-                        >
-                            Join
-                        </IonButton>
-                    </IonSlide>
-                ))}
+                {tierList.map((item: TierListType) => {
+                    const { is_subscribed, tier_id, tier_name, tier_price, tier_perks } = item;
+                    if (is_subscribed) {
+                        return null;
+                    }
+                    return (
+                        <IonSlide key={tier_id} className={ss.tierItem}>
+                            <div className={ss.tierContainer}>
+                                <div className={ss.tierName}>{tier_name}</div>
+                                <div className={ss.tierPrice}>{`$${tier_price}/Month`}</div>
+                                <div className={ss.introduce}>
+                                    You will also receive a card from me and some goodies in the
+                                    post, and access to my research OneNote - the place I make all
+                                    of my research notes on ancient
+                                </div>
+                                <ul className={ss.tierPerks}>
+                                    {tier_perks.map((perk: string) => {
+                                        return (
+                                            <li className={ss.tiers} key={perk}>
+                                                {perk}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                            <IonButton
+                                className={cx(ss.tierBtn, {
+                                    [ss.freeBtn]: item.tier_price === '0.00',
+                                })}
+                                onClick={() => handleChooseTier(item)}
+                            >
+                                Join
+                            </IonButton>
+                        </IonSlide>
+                    );
+                })}
             </IonSlides>
         </div>
     );

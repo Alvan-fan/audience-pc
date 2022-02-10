@@ -153,6 +153,7 @@ export default function globalStore (): GlobalStoreType {
             cookie.set('ACCESS_TOKEN', data.access_token, { path: '/' });
             cookie.set('REFRESH_TOKEN', data.refresh_token, { path: '/' });
             cookie.set('EXPIRED_TIME', new Date().getTime(), { path: '/' });
+            localStorage.setItem('userInfo', JSON.stringify(data));
             console.log(data);
             return data;
         },

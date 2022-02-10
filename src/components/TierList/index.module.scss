@@ -29,6 +29,10 @@
     justify-content: center;
     height: 100%;
 }
+.tierContainer {
+    height: 3.1rem;
+    overflow-y: scroll;
+}
 .tierItem {
     flex-direction: column;
     box-sizing: border-box;
@@ -63,9 +67,7 @@
 }
 .tierPerks {
     width: 100%;
-    height: 0.7rem;
     margin-bottom: 0.14rem;
-    overflow-y: scroll;
     text-align: left;
     li {
         position: relative;

@@ -20,15 +20,15 @@ interface IProps {
     onChange: (value: string) => void;
 }
 const PhoneNumberInput: React.FC<IProps> = (props) => {
-    const { phone_number = '' } = getUserInfo();
     const { value, defaultColor = false, inputClass, buttonClass, onChange } = props;
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (phone_number) {
+        const { phone_number = '' } = getUserInfo();
+        if (value === '') {
             onChange(phone_number);
         }
-    }, [phone_number]);
+    }, [value]);
 
     const handleFilterNumber = useCallback(
         (phone: string, data: any) => {
