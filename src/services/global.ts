@@ -1,4 +1,3 @@
-import { TEST_DOMAIN } from '@/utils/config';
 import { request } from '@/utils/request';
 
 // 获取用户信息
@@ -16,8 +15,12 @@ export const confirmSubscribe = (params: {
 };
 
 // 短信登陆
-export const msgLogin = (params: { phone_number: string; creator_username: string }) => {
-    return request.post('/login_link', { ...params, test_domain: TEST_DOMAIN });
+export const msgLogin = (params: {
+    phone_number: string;
+    creator_username: string;
+    identity_code: string;
+}) => {
+    return request.post('/login_link', params);
 };
 
 // 短信登陆确认

@@ -1,5 +1,5 @@
 /**
- * @file 确认页
+ * @file 确认页(待废弃)
  */
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';

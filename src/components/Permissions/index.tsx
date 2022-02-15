@@ -12,7 +12,10 @@ import PhoneNumberInput from '@/components/PhoneNumberInput';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import { PermissionsTypeEnum, PermissionsTypeMap } from '@/store/globalStore';
+import { getRandomCode } from '@/utils';
 import { IonButton, IonIcon, IonInput, IonToggle } from '@ionic/react';
+
+import VerificationCode from '../VerificationCode';
 
 import ss from './index.module.scss';
 
@@ -62,13 +65,16 @@ const TransObj: Record<string, any> = {
         title: 'Login',
         other: 'Send Login Link',
     },
+    [PermissionsTypeMap[PermissionsTypeEnum.identityCode]]: {
+        title: 'Check your phone',
+    },
 };
 
 const Permissions: React.FC<IProps> = (props) => {
     const { creatorName } = props;
     const { t } = useTranslation();
     const store: GlobalStoreType = useStore().globalStore;
-    const { permissionsType, isLogin } = store;
+    const { permissionsType, isLogin, identityCode } = store;
     const [state, dispatch] = useReducer(reducer, initState);
     const { phoneNumber, password } = state;
 
@@ -89,7 +95,7 @@ const Permissions: React.FC<IProps> = (props) => {
             return;
         }
         if (permissionsType === PermissionsTypeMap[PermissionsTypeEnum.msgLogin]) {
-            await store.msgLogin(phoneNumber, creatorName);
+            await store.msgLogin(phoneNumber, creatorName, getRandomCode());
             dispatch({ type: 'phoneNumber', value: '' });
             store.setGlobalState('globalToast', {
                 visible: true,
@@ -140,7 +146,11 @@ const Permissions: React.FC<IProps> = (props) => {
                             {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.login] && (
                                 <div className={ss.rember}>
                                     <div className={ss.toggle}>
-                                        <IonToggle checked color="primary" className={ss.toggleBtn} />
+                                        <IonToggle
+                                            checked
+                                            color="primary"
+                                            className={ss.toggleBtn}
+                                        />
                                         <div>{t('Remember Me')}</div>
                                     </div>
                                     <div
@@ -226,6 +236,9 @@ const Permissions: React.FC<IProps> = (props) => {
                                 {t(TransObj[permissionsType].other)}
                             </IonButton>
                         </div>
+                    )}
+                    {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.identityCode] && (
+                        <VerificationCode code={identityCode} type="login" />
                     )}
                 </div>
             </div>

@@ -113,5 +113,8 @@
     "Already signed up and subscribed?": "已經註冊和訂閱了?",
     "Send Login Link": "發送登入鏈接",
     "Confirm Login": "確認登入",
-    "We will send you a login link via SMS": "我們將通過短信發送您的登入鏈接"
+    "We will send you a login link via SMS": "我們將通過短信發送您的登入鏈接",
+    "Please check your SMS text message and click Confirm to continue": "請查看您的手機短信並點擊'確認'以繼續",
+    "For security reasons, please make sure the one-time security code matches the code below": "出於安全考慮，請確保一次性安全碼與以下代碼匹配",
+    "Check your phone": "檢查你的手機"
 }

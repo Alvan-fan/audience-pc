@@ -1,4 +1,3 @@
-import { TEST_DOMAIN } from '@/utils/config';
 import { request } from '@/utils/request';
 
 // 获取tier列表
@@ -16,8 +15,9 @@ export const subscribeFreeTier = (params: {
     phone_number: string;
     free_tier_id: number;
     creator_id: number;
+    identity_code: string;
 }) => {
-    return request.post('/subscribe_free_tier', { ...params, test_domain: TEST_DOMAIN });
+    return request.post('/subscribe_free_tier', params);
 };
 
 export interface CreateSubscriptionType {

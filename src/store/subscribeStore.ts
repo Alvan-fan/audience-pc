@@ -23,7 +23,8 @@ export enum StepEnum {
     tier = 1,
     pay = 2,
     memberShip = 3,
-    success = 4,
+    identityCode = 4,
+    success = 5,
 }
 
 export const StepMap = {
@@ -31,6 +32,7 @@ export const StepMap = {
     [StepEnum.tier]: 'tier',
     [StepEnum.pay]: 'pay',
     [StepEnum.memberShip]: 'memberShip',
+    [StepEnum.identityCode]: 'identityCode',
     [StepEnum.success]: 'success',
 };
 
@@ -39,10 +41,16 @@ export interface SubscribeStoreType {
     phoneNumber: string;
     step: string;
     subscribeLoading: boolean;
+    identityCode: string;
     chooseTier: TierListType | null;
     setValue: (key: string, value: number | string | boolean | TierListType | null) => void;
     getTiers: (creatorId: number) => void;
-    subscribeFreeTier: (phoneNumber: string, tierId: number, creatorId: number) => void;
+    subscribeFreeTier: (
+        phoneNumber: string,
+        tierId: number,
+        creatorId: number,
+        code: string,
+    ) => void;
     signup: (phoneNumber: string) => any;
     createSubscription: (params: CreateSubscriptionType) => void;
 }
@@ -53,6 +61,7 @@ export default function subscribeStore (): SubscribeStoreType {
         step: StepMap[StepEnum.phone],
         tierList: null,
         chooseTier: null,
+        identityCode: '',
         subscribeLoading: false,
         setValue (key, value) {
             //@ts-ignore
@@ -64,16 +73,24 @@ export default function subscribeStore (): SubscribeStoreType {
                 this.tierList = transformTierList(data);
             });
         },
-        async subscribeFreeTier (phoneNumber: string, tierId: number, creatorId: number) {
-            this.subscribeLoading = true;
+        async subscribeFreeTier (
+            phoneNumber: string,
+            tierId: number,
+            creatorId: number,
+            code: string,
+        ) {
+            this.setValue('subscribeLoading', true);
+            this.setValue('identityCode', code);
             try {
                 await subscribeFreeTier({
                     phone_number: phoneNumber,
                     free_tier_id: tierId,
                     creator_id: creatorId,
+                    identity_code: code,
                 });
+                this.setValue('step', StepMap[StepEnum.identityCode]);
             } finally {
-                this.subscribeLoading = false;
+                this.setValue('subscribeLoading', false);
             }
         },
         async signup (phoneNumber: string) {

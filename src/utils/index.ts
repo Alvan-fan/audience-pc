@@ -47,7 +47,11 @@ export const isExpired = () => {
 
 // 判断是否登陆
 export const isLogin = () => {
-    return !!(cookie.get('ACCESS_TOKEN') && !isExpired() && Object.keys(getUserInfo()).length !== 0);
+    return !!(
+        cookie.get('ACCESS_TOKEN') &&
+        !isExpired() &&
+        Object.keys(getUserInfo()).length !== 0
+    );
 };
 
 // 全局导出获取token方法
@@ -101,4 +105,9 @@ export const getI18nLanguage = (ctx: any) => {
         return 'en';
     }
     return language;
+};
+
+// 生成6位随机数
+export const getRandomCode = () => {
+    return Math.random().toFixed(6).slice(-6).toString();
 };

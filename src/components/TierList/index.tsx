@@ -11,6 +11,7 @@ import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType, TierListType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
+import { getRandomCode } from '@/utils';
 import { logEvent } from '@/utils/analytics';
 import { IonButton, IonIcon, IonSlide, IonSlides, IonSpinner } from '@ionic/react';
 
@@ -38,12 +39,7 @@ const TierList: React.FC = () => {
             logEvent('subscribe free', 'click free subscribe');
             const { tier_id } = data;
             const { id } = userInfo;
-            try {
-                await store.subscribeFreeTier(phoneNumber, tier_id, id);
-            } finally {
-                store.setValue('subscribeLoading', false);
-            }
-            store.setValue('step', StepMap[StepEnum.success]);
+            store.subscribeFreeTier(phoneNumber, tier_id, id, getRandomCode());
         },
         [phoneNumber, userInfo],
     );

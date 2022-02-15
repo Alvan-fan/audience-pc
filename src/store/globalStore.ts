@@ -19,6 +19,7 @@ export enum PermissionsTypeEnum {
     'signup' = 2,
     'resetpassword' = 3,
     'msgLogin' = 4,
+    'identityCode' = 5,
 }
 
 export const PermissionsTypeMap = {
@@ -27,6 +28,7 @@ export const PermissionsTypeMap = {
     [PermissionsTypeEnum.signup]: 'signup',
     [PermissionsTypeEnum.resetpassword]: 'resetpassword',
     [PermissionsTypeEnum.msgLogin]: 'msgLogin',
+    [PermissionsTypeEnum.identityCode]: 'identityCode',
 };
 
 interface PostCountType {
@@ -60,12 +62,13 @@ export interface GlobalStoreType {
     showGuide: boolean;
     subscribeVisible: boolean;
     isLogin: boolean;
+    identityCode: string;
     userInfo: UserType | null;
     globalToast: GlobalToastType;
     confirmMsgLogin: (token: string) => void;
     confirmSubscribe: (token: string, creatorId: number, tierId: number) => any;
     setUserInfo: (userName: string) => void;
-    msgLogin: (phoneNumber: string, creatorUsername: string) => any;
+    msgLogin: (phoneNumber: string, creatorUsername: string, code: string) => any;
     login: (phoneNumber: string, password: string) => void;
     signup: (phoneNumber: string, password: string) => void;
     resetPassWord: (phoneNumber: string, password: string) => void;
@@ -78,6 +81,7 @@ export default function globalStore (): GlobalStoreType {
         showGuide: true,
         subscribeVisible: false,
         isLogin: false,
+        identityCode: '',
         globalToast: {
             visible: false,
             msg: '',
@@ -89,17 +93,19 @@ export default function globalStore (): GlobalStoreType {
             //@ts-ignore
             this[type] = value;
         },
-        async msgLogin (phoneNumber: string, creatorUsername: string) {
+        async msgLogin (phoneNumber: string, creatorUsername: string, code: string) {
             this.setGlobalState('isLogin', true);
+            this.setGlobalState('identityCode', code);
             try {
                 await msgLogin({
                     phone_number: phoneNumber,
                     creator_username: creatorUsername,
+                    identity_code: code,
                 });
                 this.setGlobalState('isLogin', false);
                 this.setGlobalState(
                     'permissionsType',
-                    PermissionsTypeMap[PermissionsTypeEnum.none],
+                    PermissionsTypeMap[PermissionsTypeEnum.identityCode],
                 );
             } catch (error) {
                 this.setGlobalState('isLogin', false);

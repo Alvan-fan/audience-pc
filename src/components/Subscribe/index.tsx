@@ -21,9 +21,12 @@ import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
 import type { SubscribeStoreType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
+import { getRandomCode } from '@/utils';
 import { logEvent } from '@/utils/analytics';
 import { IonAvatar, IonButton, IonIcon, IonLoading, useIonToast } from '@ionic/react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+
+import VerificationCode from '../VerificationCode';
 
 import ss from './index.module.scss';
 
@@ -35,7 +38,7 @@ const Subscribe: React.FC = () => {
     const globalStore: GlobalStoreType = useStore().globalStore;
     const store: SubscribeStoreType = useStore().subscribeStore;
     const { subscribeVisible, userInfo } = globalStore;
-    const { step, phoneNumber, chooseTier, subscribeLoading } = store;
+    const { step, phoneNumber, chooseTier, subscribeLoading, identityCode } = store;
     const [disableBtn, setDisableBtn] = useState<boolean>(true);
 
     // 如果以后首页的tier列表和订阅里面的不一致的时候需要
@@ -143,12 +146,7 @@ const Subscribe: React.FC = () => {
         logEvent('subscribe free', 'click free subscribe');
         const { tier_id } = chooseTier;
         const { id } = userInfo;
-        try {
-            await store.subscribeFreeTier(phoneNumber, tier_id, id);
-        } finally {
-            store.setValue('subscribeLoading', false);
-        }
-        store.setValue('step', StepMap[StepEnum.success]);
+        store.subscribeFreeTier(phoneNumber, tier_id, id, getRandomCode());
     }, [chooseTier, phoneNumber, userInfo]);
 
     const handlePrevStep = useCallback(() => {
@@ -357,6 +355,12 @@ const Subscribe: React.FC = () => {
                                 <ApplePay />
                             </>
                         )}
+                    </div>
+                )}
+                {step === StepMap[StepEnum.identityCode] && (
+                    <div className={ss.content}>
+                        <div className={ss.title}>Step 3/3: {t('Check your phone')}</div>
+                        <VerificationCode code={identityCode} type="subscribe" className={ss.codeContainer} />
                     </div>
                 )}
                 {step === StepMap[StepEnum.success] && (
