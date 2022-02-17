@@ -360,7 +360,12 @@ const Subscribe: React.FC = () => {
                 {step === StepMap[StepEnum.identityCode] && (
                     <div className={ss.content}>
                         <div className={ss.title}>Step 3/3: {t('Check your phone')}</div>
-                        <VerificationCode code={identityCode} type="subscribe" className={ss.codeContainer} />
+                        <VerificationCode
+                            className={ss.codeContainer}
+                            code={identityCode}
+                            type="subscribe"
+                            phone={phoneNumber}
+                        />
                     </div>
                 )}
                 {step === StepMap[StepEnum.success] && (

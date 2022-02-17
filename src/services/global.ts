@@ -5,6 +5,15 @@ export const getUserInfo = (params: { visit_username: string }) => {
     return request.post('/get_profile', params);
 };
 
+// 轮询是否确认登陆或订阅
+export const isConfirm = (params: {
+    action_type: string;
+    identity_code: string;
+    phone_number: string;
+}) => {
+    return request.post('/pc_loop_check_login_status', params);
+};
+
 // 确认订阅
 export const confirmSubscribe = (params: {
     token: string;

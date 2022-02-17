@@ -74,7 +74,7 @@ const Permissions: React.FC<IProps> = (props) => {
     const { creatorName } = props;
     const { t } = useTranslation();
     const store: GlobalStoreType = useStore().globalStore;
-    const { permissionsType, isLogin, identityCode } = store;
+    const { permissionsType, loginLoading, identityCode } = store;
     const [state, dispatch] = useReducer(reducer, initState);
     const { phoneNumber, password } = state;
 
@@ -168,7 +168,7 @@ const Permissions: React.FC<IProps> = (props) => {
                                     </div>
                                 </div>
                             )}
-                            <IonButton disabled={isLogin} onClick={handleSubmit}>
+                            <IonButton disabled={loginLoading} onClick={handleSubmit}>
                                 {t(TransObj[permissionsType].title)}
                             </IonButton>
                             <div>
@@ -232,13 +232,13 @@ const Permissions: React.FC<IProps> = (props) => {
                                 }}
                                 value={phoneNumber}
                             />
-                            <IonButton disabled={isLogin} onClick={handleSubmit}>
+                            <IonButton disabled={loginLoading} onClick={handleSubmit}>
                                 {t(TransObj[permissionsType].other)}
                             </IonButton>
                         </div>
                     )}
                     {permissionsType === PermissionsTypeMap[PermissionsTypeEnum.identityCode] && (
-                        <VerificationCode code={identityCode} type="login" />
+                        <VerificationCode code={identityCode} type="login" phone={phoneNumber} />
                     )}
                 </div>
             </div>

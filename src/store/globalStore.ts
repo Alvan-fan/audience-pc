@@ -4,6 +4,7 @@ import {
     confirmMsgLogin,
     confirmSubscribe,
     getUserInfo,
+    isConfirm,
     login,
     msgLogin,
     resetPassWord,
@@ -29,6 +30,15 @@ export const PermissionsTypeMap = {
     [PermissionsTypeEnum.resetpassword]: 'resetpassword',
     [PermissionsTypeEnum.msgLogin]: 'msgLogin',
     [PermissionsTypeEnum.identityCode]: 'identityCode',
+};
+
+export enum ActionTypeEnum {
+    'login' = 0,
+    'subscribe' = 1,
+}
+export const ActionTypeMap = {
+    [ActionTypeEnum.login]: 'pc_login',
+    [ActionTypeEnum.subscribe]: 'pc_subscribe_free',
 };
 
 interface PostCountType {
@@ -61,10 +71,11 @@ export interface GlobalStoreType {
     permissionsType: string;
     showGuide: boolean;
     subscribeVisible: boolean;
-    isLogin: boolean;
+    loginLoading: boolean;
     identityCode: string;
     userInfo: UserType | null;
     globalToast: GlobalToastType;
+    isConfirmLogin: (type: string, code: string, phone: string) => any;
     confirmMsgLogin: (token: string) => void;
     confirmSubscribe: (token: string, creatorId: number, tierId: number) => any;
     setUserInfo: (userName: string) => void;
@@ -80,7 +91,7 @@ export default function globalStore (): GlobalStoreType {
         permissionsType: PermissionsTypeMap[PermissionsTypeEnum.none],
         showGuide: true,
         subscribeVisible: false,
-        isLogin: false,
+        loginLoading: false,
         identityCode: '',
         globalToast: {
             visible: false,
@@ -94,7 +105,7 @@ export default function globalStore (): GlobalStoreType {
             this[type] = value;
         },
         async msgLogin (phoneNumber: string, creatorUsername: string, code: string) {
-            this.setGlobalState('isLogin', true);
+            this.setGlobalState('loginLoading', true);
             this.setGlobalState('identityCode', code);
             try {
                 await msgLogin({
@@ -102,13 +113,13 @@ export default function globalStore (): GlobalStoreType {
                     creator_username: creatorUsername,
                     identity_code: code,
                 });
-                this.setGlobalState('isLogin', false);
+                this.setGlobalState('loginLoading', false);
                 this.setGlobalState(
                     'permissionsType',
                     PermissionsTypeMap[PermissionsTypeEnum.identityCode],
                 );
             } catch (error) {
-                this.setGlobalState('isLogin', false);
+                this.setGlobalState('loginLoading', false);
                 // 切换路由后全局toast不显示
                 this.setGlobalState('globalToast', {
                     visible: true,
@@ -118,9 +129,9 @@ export default function globalStore (): GlobalStoreType {
             }
         },
         async login (phoneNumber: string, password: string) {
-            this.setGlobalState('isLogin', true);
+            this.setGlobalState('loginLoading', true);
             const { data } = await login({ phone_number: phoneNumber, password });
-            this.setGlobalState('isLogin', false);
+            this.setGlobalState('loginLoading', false);
             cookie.set('ACCESS_TOKEN', data.access_token, { path: '/' });
             cookie.set('REFRESH_TOKEN', data.refresh_token, { path: '/' });
             cookie.set('EXPIRED_TIME', new Date().getTime(), { path: '/' });
@@ -142,6 +153,29 @@ export default function globalStore (): GlobalStoreType {
                 this.userInfo = transformUserInfo(data);
             });
         },
+        async isConfirmLogin (type: string, code: string, phone: string) {
+            try {
+                const { data } = await isConfirm({
+                    action_type: type,
+                    identity_code: code,
+                    phone_number: phone,
+                });
+                if (data) {
+                    cookie.set('ACCESS_TOKEN', data.access_token, { path: '/' });
+                    cookie.set('REFRESH_TOKEN', data.refresh_token, { path: '/' });
+                    cookie.set('EXPIRED_TIME', new Date().getTime(), { path: '/' });
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                }
+                return data;
+            } catch (error) {
+                this.setGlobalState(
+                    'permissionsType',
+                    PermissionsTypeMap[PermissionsTypeEnum.none],
+                );
+                this.setGlobalState('subscribeVisible', false);
+            }
+        },
+        // 待废弃
         async confirmMsgLogin (token: string) {
             const { data } = await confirmMsgLogin({ login_token: token });
             cookie.set('ACCESS_TOKEN', data.access_token, { path: '/' });
@@ -150,6 +184,7 @@ export default function globalStore (): GlobalStoreType {
             localStorage.setItem('userInfo', JSON.stringify(data));
             console.log(data);
         },
+        // 待废弃
         async confirmSubscribe (token: string, creatorId: number, tierId: number) {
             const { data } = await confirmSubscribe({
                 token,
