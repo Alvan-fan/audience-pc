@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import cx from 'classnames';
 import { observer } from 'mobx-react';
+import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 // import { useModalVisible } from '@/hooks';
 import { useStore } from '@/store';
 import type { GlobalStoreType } from '@/store/globalStore';
-import { PermissionsTypeEnum, PermissionsTypeMap } from '@/store/globalStore';
 import { ActionTypeEnum, ActionTypeMap } from '@/store/globalStore';
 import type { SubscribeStoreType } from '@/store/subscribeStore';
 import { StepEnum, StepMap } from '@/store/subscribeStore';
+import { useIonToast } from '@ionic/react';
 
 // import { IonLoading } from '@ionic/react';
 import ss from './index.module.scss';
@@ -23,9 +24,9 @@ interface IProps {
 const VerificationCode: React.FC<IProps> = (props) => {
     const { className, type, code = '', phone = '' } = props;
     const { t } = useTranslation();
+    const [present] = useIonToast();
     const globalStore: GlobalStoreType = useStore().globalStore;
     const subscribeStore: SubscribeStoreType = useStore().subscribeStore;
-
     // const [visible, show, hide] = useModalVisible();
 
     useEffect(() => {
@@ -41,10 +42,13 @@ const VerificationCode: React.FC<IProps> = (props) => {
                 return;
             }
             if (type === 'login') {
-                globalStore.setGlobalState(
-                    'permissionsType',
-                    PermissionsTypeMap[PermissionsTypeEnum.none],
-                );
+                await present({
+                    mode: 'ios',
+                    message: t('Login Success'),
+                    duration: 1000,
+                    color: 'success',
+                });
+                router.reload();
             }
             if (type === 'subscribe') {
                 subscribeStore.setValue('step', StepMap[StepEnum.success]);

@@ -2,10 +2,11 @@
  * @file header组件
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import logo from '/public/img/logo.svg';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
+import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { useStore } from '@/store';
@@ -21,15 +22,13 @@ const Header: React.FC = () => {
     const { t } = useTranslation();
     const store: GlobalStoreType = useStore().globalStore;
     const subscribeStore: SubscribeStoreType = useStore().subscribeStore;
-    const [loginOut, setLoginOut] = useState<boolean>(false);
 
     const handleLoginOut = useCallback(() => {
         cookie.remove('ACCESS_TOKEN');
         cookie.remove('REFRESH_TOKEN');
         cookie.remove('EXPIRED_TIME');
         localStorage.removeItem('userInfo');
-        setLoginOut(true);
-        subscribeStore.setValue('phoneNumber', '');
+        router.reload();
     }, [subscribeStore]);
 
     const menus = useMemo(
@@ -47,7 +46,7 @@ const Header: React.FC = () => {
     }, []);
 
     const RenderLoginBar = useCallback(() => {
-        if (isLogin() && !loginOut) {
+        if (isLogin()) {
             const { name = '', avatar = '' } = getUserInfo();
             return (
                 <div className={ss.loginContainer}>
@@ -74,7 +73,7 @@ const Header: React.FC = () => {
                 {t('Login')}
             </IonButton>
         );
-    }, [handleLogin, loginOut, menus]);
+    }, []);
 
     return (
         <div className={ss.container}>

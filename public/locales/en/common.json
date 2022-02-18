@@ -116,5 +116,6 @@
     "We will send you a login link via SMS": "We will send you a login link via SMS",
     "Please check your SMS text message and click Confirm to continue": "Please check your SMS text message and click 'Confirm' to continue",
     "For security reasons, please make sure the one-time security code matches the code below": "For security reasons, please make sure the one-time security code matches the code below",
-    "Check your phone": "Check your phone"
+    "Check your phone": "Check your phone",
+    "Login Success": "Login Success"
 }

@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { chevronBackOutline } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
+import router from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import ApplePay from '@/components/ApplePay';
@@ -50,8 +51,12 @@ const Subscribe: React.FC = () => {
     // }, [step, userInfo]);
 
     const toggleModal = useCallback(() => {
+        console.log(subscribeVisible, step);
         globalStore.setGlobalState('subscribeVisible', !subscribeVisible);
-    }, [subscribeVisible]);
+        if (step === StepMap[StepEnum.success] && subscribeVisible) {
+            router.reload();
+        }
+    }, [step, subscribeVisible]);
 
     const handleDidDismiss = useCallback(() => {
         store.setValue('step', StepMap[StepEnum.phone]);
